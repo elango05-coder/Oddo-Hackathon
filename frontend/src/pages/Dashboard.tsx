@@ -72,6 +72,10 @@ export const Dashboard: React.FC = () => {
     },
   });
 
+  if (userRole === 'Employee') {
+    return null;
+  }
+
   if (isLoading) {
     return (
       <DashboardLayout>

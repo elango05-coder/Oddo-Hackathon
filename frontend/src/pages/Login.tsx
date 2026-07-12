@@ -35,7 +35,14 @@ export const Login: React.FC = () => {
 
   React.useEffect(() => {
     if (token && user) {
-      navigate(from, { replace: true });
+      let target = from;
+      if (from === '/') {
+        const userRole = typeof user.roleId === 'object' ? user.roleId?.name : '';
+        if (userRole === 'Employee') {
+          target = '/assets';
+        }
+      }
+      navigate(target, { replace: true });
     }
   }, [token, user, navigate, from]);
 

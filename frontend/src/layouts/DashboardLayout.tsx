@@ -194,7 +194,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         name: 'Dashboard',
         path: '/',
         icon: LayoutDashboard,
-        roles: ['Admin', 'Asset Manager', 'Department Head', 'Employee'],
+        roles: ['Admin', 'Asset Manager', 'Department Head'],
       },
       {
         name: 'Organization',
