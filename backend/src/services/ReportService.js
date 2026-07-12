@@ -153,17 +153,26 @@ class ReportService {
   async exportAssetsToCSV() {
     const assets = await AssetRepository.find({}, { populate: 'categoryId departmentId currentHolderId' });
     
-    const headers = ['Asset Tag', 'Asset Name', 'Category', 'Department', 'Status', 'Serial Number', 'Purchase Date', 'Purchase Cost', 'Current Holder'];
+    const headers = ['Asset Tag', 'Asset Name', 'Category', 'Department', 'Status', 'Serial Number', 'Purchase Date', 'Purchase Cost (INR)', 'Current Holder'];
+    const escapeCSV = (val) => {
+      if (val == null) return 'N/A';
+      const str = String(val);
+      if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+        return `"${str.replace(/"/g, '""')}"`;
+      }
+      return str;
+    };
+
     const rows = assets.map((asset) => [
-      asset.tag,
-      `"${asset.name.replace(/"/g, '""')}"`,
-      asset.categoryId ? `"${asset.categoryId.name.replace(/"/g, '""')}"` : 'N/A',
-      asset.departmentId ? `"${asset.departmentId.name.replace(/"/g, '""')}"` : 'N/A',
-      asset.status,
-      asset.serialNumber || 'N/A',
-      asset.purchaseDate ? new Date(asset.purchaseDate).toISOString().split('T')[0] : 'N/A',
-      asset.purchaseCost,
-      asset.currentHolderId ? `"${asset.currentHolderId.name.replace(/"/g, '""')}"` : 'N/A',
+      escapeCSV(asset.tag),
+      escapeCSV(asset.name),
+      escapeCSV(asset.categoryId?.name),
+      escapeCSV(asset.departmentId?.name),
+      escapeCSV(asset.status),
+      escapeCSV(asset.serialNumber),
+      asset.purchaseDate ? new Date(asset.purchaseDate).toLocaleDateString('en-IN') : 'N/A',
+      asset.purchaseCost != null ? asset.purchaseCost : 0,
+      escapeCSV(asset.currentHolderId?.name),
     ]);
 
     const csvContent = [
