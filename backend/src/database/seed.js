@@ -49,6 +49,14 @@ const seedData = async () => {
       logger.info('Admin user already exists.');
     }
 
+    // Automatically trigger Sandbox demo data seeder if no employees exist yet
+    const employeeCount = await User.countDocuments({ email: { $ne: adminEmail } });
+    if (employeeCount < 5) {
+      logger.info('Fewer than 5 sandbox employees found. Auto-generating demo database sandbox...');
+      const seedDemoData = require('./demoSeeder');
+      await seedDemoData();
+    }
+
     logger.info('Database seeding completed successfully!');
   } catch (error) {
     logger.error(`Database seeding failed: ${error.message}`);

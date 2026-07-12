@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import { dashboardService } from '../services/dashboardService';
 import { DashboardLayout } from '../layouts/DashboardLayout';
 import {
@@ -31,10 +33,21 @@ const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'
 
 export const Dashboard: React.FC = () => {
   const queryClient = useQueryClient();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const userRole = typeof user?.roleId === 'object' ? user.roleId.name : '';
+
+  useEffect(() => {
+    if (userRole === 'Employee') {
+      navigate('/assets', { replace: true });
+    }
+  }, [userRole, navigate]);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['dashboardStats'],
     queryFn: () => dashboardService.getStats(),
+    enabled: userRole !== '' && userRole !== 'Employee',
   });
 
   const rebuildCacheMutation = useMutation({
@@ -172,7 +185,7 @@ export const Dashboard: React.FC = () => {
           <div>
             <span className="text-xs font-medium text-slate-500">Total Inventory Cost</span>
             <h3 className="text-2xl font-bold mt-1 text-slate-900 dark:text-white">
-              ${stats.totalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              ₹{stats.totalValue.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </h3>
           </div>
           <div className="p-3 bg-green-50 dark:bg-green-950/40 text-green-600 dark:text-green-400 rounded-xl">
@@ -227,7 +240,7 @@ export const Dashboard: React.FC = () => {
                       color: '#f8fafc',
                     }}
                   />
-                  <Bar dataKey="totalCost" fill="#6366f1" radius={[4, 4, 0, 0]} name="Cost ($)" />
+                  <Bar dataKey="totalCost" fill="#6366f1" radius={[4, 4, 0, 0]} name="Cost (₹)" />
                 </BarChart>
               </ResponsiveContainer>
             )}

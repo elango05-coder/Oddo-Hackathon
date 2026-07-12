@@ -178,7 +178,7 @@ export const Reports: React.FC = () => {
                             color: '#f8fafc',
                           }}
                         />
-                        <Bar dataKey="totalCost" fill="#ef4444" radius={[4, 4, 0, 0]} name="Cost ($)" />
+                        <Bar dataKey="totalCost" fill="#ef4444" radius={[4, 4, 0, 0]} name="Cost (₹)" />
                       </BarChart>
                     </ResponsiveContainer>
                   )}
@@ -199,7 +199,7 @@ export const Reports: React.FC = () => {
                       <tr>
                         <th className="px-4 py-2.5 text-left font-semibold text-slate-500">Asset</th>
                         <th className="px-4 py-2.5 text-left font-semibold text-slate-500">Tag / Code</th>
-                        <th className="px-4 py-2.5 text-left font-semibold text-slate-500">Purchase Cost ($)</th>
+                        <th className="px-4 py-2.5 text-left font-semibold text-slate-500">Purchase Cost (₹)</th>
                         <th className="px-4 py-2.5 text-left font-semibold text-slate-500">Purchase Date</th>
                       </tr>
                     </thead>
@@ -213,7 +213,7 @@ export const Reports: React.FC = () => {
                           <tr key={asset._id}>
                             <td className="px-4 py-3 font-semibold text-slate-900">{asset.name}</td>
                             <td className="px-4 py-3 font-mono font-bold">{asset.tag}</td>
-                            <td className="px-4 py-3 font-mono">${asset.purchaseCost.toFixed(2)}</td>
+                            <td className="px-4 py-3 font-mono">₹{asset.purchaseCost.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                             <td className="px-4 py-3">{new Date(asset.purchaseDate).toLocaleDateString()}</td>
                           </tr>
                         ))

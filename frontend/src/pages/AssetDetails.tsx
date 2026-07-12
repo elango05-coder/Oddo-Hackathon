@@ -156,7 +156,7 @@ export const AssetDetails: React.FC = () => {
                 <h4 className="font-bold text-xs uppercase tracking-wider text-slate-400">Financial Params</h4>
                 <div className="text-xs space-y-1.5">
                   <p className="text-slate-500">Purchase Date: <strong className="text-slate-800 dark:text-slate-200">{new Date(asset.purchaseDate).toLocaleDateString()}</strong></p>
-                  <p className="text-slate-500">Purchase Cost: <strong className="text-slate-800 dark:text-slate-200 font-mono">${asset.purchaseCost.toFixed(2)}</strong></p>
+                  <p className="text-slate-500">Purchase Cost: <strong className="text-slate-800 dark:text-slate-200 font-mono">₹{asset.purchaseCost.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></p>
                   <p className="text-slate-500">Lifecycle Stage: <strong className="text-slate-800 dark:text-slate-200">{asset.lifecycleStage}</strong></p>
                 </div>
               </div>

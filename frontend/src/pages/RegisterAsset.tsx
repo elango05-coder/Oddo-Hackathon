@@ -288,7 +288,7 @@ export const RegisterAsset: React.FC = () => {
 
               {/* Purchase Cost */}
               <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Purchase Cost ($)</label>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Purchase Cost (₹)</label>
                 <input
                   type="number"
                   step="0.01"

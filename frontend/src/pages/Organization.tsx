@@ -13,8 +13,8 @@ export const Organization: React.FC = () => {
           domain: 'assetflow.com',
           licenseKey: 'AF-ERP-9082-XM99-LL01',
           timezone: 'GMT +5:30',
-          currency: 'USD ($)',
-          location: 'San Francisco, CA, USA',
+          currency: 'INR (₹)',
+          location: 'New Delhi, Delhi, India',
         };
   });
 

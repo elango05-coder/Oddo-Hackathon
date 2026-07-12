@@ -326,7 +326,7 @@ export const Assets: React.FC = () => {
                   <th className="px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Category</th>
                   <th className="px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 cursor-pointer" onClick={() => handleSort('purchaseCost')}>
                     <div className="flex items-center gap-1">
-                      Purchase Cost ($)
+                      Purchase Cost (₹)
                       <ArrowUpDown className="h-3 w-3" />
                     </div>
                   </th>
@@ -368,7 +368,7 @@ export const Assets: React.FC = () => {
                           <span className="font-medium text-slate-800 dark:text-slate-200">{categoryName}</span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 font-mono">
-                          ${asset.purchaseCost.toFixed(2)}
+                          ₹{asset.purchaseCost.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                           <span
