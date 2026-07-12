@@ -6,54 +6,100 @@ const DepartmentRepository = require('../repositories/DepartmentRepository');
 
 class ReportService {
   async getAssetUtilization() {
-    const totalAssets = await AssetRepository.count({});
-    const allocated = await AssetRepository.count({ status: 'Allocated' });
-    const maintenance = await AssetRepository.count({ status: 'UnderMaintenance' });
-    const available = await AssetRepository.count({ status: 'Available' });
-
-    const utilizationRate = totalAssets > 0 ? (allocated / totalAssets) * 100 : 0;
-
-    return {
-      totalAssets,
-      allocatedCount: allocated,
-      maintenanceCount: maintenance,
-      availableCount: available,
-      utilizationRate: Number(utilizationRate.toFixed(2)),
-    };
+    return await AssetRepository.aggregate([
+      { $match: { isDeleted: { $ne: true } } },
+      {
+        $group: {
+          _id: '$categoryId',
+          total: { $sum: 1 },
+          allocated: {
+            $sum: {
+              $cond: [{ $eq: ['$status', 'Allocated'] }, 1, 0]
+            }
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: 'assetcategories',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'categoryInfo'
+        }
+      },
+      {
+        $unwind: {
+          path: '$categoryInfo',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          category: { $ifNull: ['$categoryInfo.name', 'Uncategorized'] },
+          total: 1,
+          allocated: 1,
+          utilizationRate: {
+            $cond: [
+              { $gt: ['$total', 0] },
+              { $multiply: [{ $divide: ['$allocated', '$total'] }, 100] },
+              0
+            ]
+          }
+        }
+      },
+      {
+        $project: {
+          category: 1,
+          utilizationRate: { $round: ['$utilizationRate', 2] }
+        }
+      }
+    ]);
   }
 
   async getMaintenanceStats() {
-    // Total maintenance costs and ticket durations
-    const tickets = await MaintenanceRequestRepository.find({ status: 'Resolved' });
-    
-    let totalCost = 0;
-    let avgCost = 0;
-    
-    tickets.forEach((ticket) => {
-      totalCost += ticket.actualCost;
-    });
-
-    if (tickets.length > 0) {
-      avgCost = totalCost / tickets.length;
-    }
-
-    // Cost by priority
-    const priorityStats = await MaintenanceRequestRepository.aggregate([
+    return await MaintenanceRequestRepository.aggregate([
+      { $match: { isDeleted: { $ne: true }, status: 'Resolved' } },
+      {
+        $lookup: {
+          from: 'assets',
+          localField: 'assetId',
+          foreignField: '_id',
+          as: 'assetInfo'
+        }
+      },
+      {
+        $unwind: {
+          path: '$assetInfo',
+          preserveNullAndEmptyArrays: true
+        }
+      },
       {
         $group: {
-          _id: '$priority',
-          count: { $sum: 1 },
-          totalCost: { $sum: '$actualCost' },
-        },
+          _id: '$assetInfo.categoryId',
+          totalCost: { $sum: { $ifNull: ['$actualCost', '$estimatedCost'] } }
+        }
       },
+      {
+        $lookup: {
+          from: 'assetcategories',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'categoryInfo'
+        }
+      },
+      {
+        $unwind: {
+          path: '$categoryInfo',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          category: { $ifNull: ['$categoryInfo.name', 'Uncategorized'] },
+          totalCost: 1
+        }
+      }
     ]);
-
-    return {
-      resolvedTicketsCount: tickets.length,
-      totalMaintenanceCost: totalCost,
-      averageRepairCost: Number(avgCost.toFixed(2)),
-      priorityStats,
-    };
   }
 
   async getIdleAssets() {

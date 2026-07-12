@@ -68,7 +68,27 @@ export const Audits: React.FC = () => {
     setReportModalOpen(true);
     try {
       const res = await auditService.getDiscrepancyReport(cycleId);
-      setReportItems(res.data || []);
+      const reportData = res.data || {};
+      const items: any[] = [];
+      
+      if (reportData.discrepancies?.missing) {
+        items.push(...reportData.discrepancies.missing.map((item: any) => ({ ...item, status: 'Missing' })));
+      }
+      if (reportData.discrepancies?.damaged) {
+        items.push(...reportData.discrepancies.damaged.map((item: any) => ({ ...item, status: 'Damaged' })));
+      }
+      if (reportData.discrepancies?.unverified) {
+        reportData.discrepancies.unverified.forEach((asset: any) => {
+          items.push({
+            _id: `unverified-${asset._id}`,
+            assetId: asset,
+            expectedHolderId: asset.allocatedTo,
+            status: 'Unverified',
+            notes: 'Asset not scanned during this cycle.'
+          });
+        });
+      }
+      setReportItems(items);
     } catch (e: any) {
       toast.error('Failed to load discrepancy report.');
       setReportModalOpen(false);
@@ -485,7 +505,11 @@ export const Audits: React.FC = () => {
                               </td>
                               <td className="px-4 py-3 whitespace-nowrap">
                                 <span className={`px-2 py-0.5 rounded font-bold uppercase text-[9px] ${
-                                  item.status === 'Missing' ? 'bg-red-50 text-red-700' : 'bg-amber-55/10 text-amber-700'
+                                  item.status === 'Missing'
+                                    ? 'bg-red-50 text-red-700 dark:bg-red-950/20 dark:text-red-400'
+                                    : item.status === 'Damaged'
+                                    ? 'bg-amber-50 text-amber-700 dark:bg-amber-950/20 dark:text-amber-400'
+                                    : 'bg-slate-50 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
                                 }`}>
                                   {item.status}
                                 </span>
