@@ -15,17 +15,34 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(() => {
     const savedUser = localStorage.getItem('user');
-    return savedUser ? JSON.parse(savedUser) : null;
+    if (!savedUser) return null;
+    try {
+      const parsedUser = JSON.parse(savedUser);
+      return {
+        ...parsedUser,
+        _id: parsedUser._id || parsedUser.id,
+        roleId: parsedUser.roleId || (parsedUser.role ? { _id: '', name: parsedUser.role, permissions: [] } : null),
+        departmentId: parsedUser.departmentId || (parsedUser.department ? { _id: '', name: parsedUser.department, code: '' } : null)
+      };
+    } catch {
+      return null;
+    }
   });
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'));
   const loading = false;
 
-  const login = (newToken: string, newRefreshToken: string, newUser: User) => {
+  const login = (newToken: string, newRefreshToken: string, newUser: any) => {
+    const mappedUser = {
+      ...newUser,
+      _id: newUser._id || newUser.id,
+      roleId: newUser.roleId || (newUser.role ? { _id: '', name: newUser.role, permissions: [] } : null),
+      departmentId: newUser.departmentId || (newUser.department ? { _id: '', name: newUser.department, code: '' } : null)
+    };
     localStorage.setItem('token', newToken);
     localStorage.setItem('refreshToken', newRefreshToken);
-    localStorage.setItem('user', JSON.stringify(newUser));
+    localStorage.setItem('user', JSON.stringify(mappedUser));
     setToken(newToken);
-    setUser(newUser);
+    setUser(mappedUser);
   };
 
   const logout = () => {
@@ -36,9 +53,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(null);
   };
 
-  const updateUser = (updatedUser: User) => {
-    localStorage.setItem('user', JSON.stringify(updatedUser));
-    setUser(updatedUser);
+  const updateUser = (updatedUser: any) => {
+    const mappedUser = {
+      ...updatedUser,
+      _id: updatedUser._id || updatedUser.id,
+      roleId: updatedUser.roleId || (updatedUser.role ? { _id: '', name: updatedUser.role, permissions: [] } : null),
+      departmentId: updatedUser.departmentId || (updatedUser.department ? { _id: '', name: updatedUser.department, code: '' } : null)
+    };
+    localStorage.setItem('user', JSON.stringify(mappedUser));
+    setUser(mappedUser);
   };
 
   useEffect(() => {

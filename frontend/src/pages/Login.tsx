@@ -17,7 +17,7 @@ const loginSchema = z.object({
 type LoginInput = z.infer<typeof loginSchema>;
 
 export const Login: React.FC = () => {
-  const { login } = useAuth();
+  const { user, token, login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
@@ -33,21 +33,26 @@ export const Login: React.FC = () => {
 
   const from = (location.state as any)?.from?.pathname || '/';
 
+  React.useEffect(() => {
+    if (token && user) {
+      navigate(from, { replace: true });
+    }
+  }, [token, user, navigate, from]);
+
   const onSubmit = async (data: LoginInput) => {
     setSubmitting(true);
     try {
       const res = await authService.login(data);
-      const { token, refreshToken, user } = res.data;
+      const { accessToken: newToken, refreshToken, user: newUser } = res.data;
       
-      if (!user.isEmailVerified) {
+      if (!newUser.isEmailVerified) {
         toast.error('Your email is not verified yet. Please check your email inbox.');
         setSubmitting(false);
         return;
       }
       
-      login(token, refreshToken, user);
+      login(newToken, refreshToken, newUser);
       toast.success('Logged in successfully!');
-      navigate(from, { replace: true });
     } catch (error: any) {
       const errMsg = error.response?.data?.message || 'Login failed. Please verify credentials.';
       toast.error(errMsg);
