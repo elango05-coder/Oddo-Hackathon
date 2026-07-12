@@ -8,9 +8,10 @@ import {
   AlertCircle,
   FileSpreadsheet,
   Activity,
-  Clock,
   RefreshCw,
-  Wrench
+  Wrench,
+  Database,
+  Sparkles
 } from 'lucide-react';
 import {
   BarChart,
@@ -47,6 +48,17 @@ export const Dashboard: React.FC = () => {
     },
   });
 
+  const seedDemoMutation = useMutation({
+    mutationFn: () => dashboardService.seedDemo(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['dashboardStats'] });
+      toast.success('Database successfully seeded with 20 Departments, 200 Employees, 1000 Assets, 300 Bookings, 150 Maintenance tickets, and 50 Audit cycles!');
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.message || 'Failed to seed demo database.');
+    },
+  });
+
   if (isLoading) {
     return (
       <DashboardLayout>
@@ -78,8 +90,54 @@ export const Dashboard: React.FC = () => {
     maintenanceCosts: []
   };
 
+  const getActionColor = (action: string) => {
+    switch (action) {
+      case 'REGISTER_ASSET':
+      case 'CREATE_AUDIT_CYCLE':
+        return 'bg-emerald-500';
+      case 'UPDATE_ASSET':
+      case 'RETURN_ASSET':
+        return 'bg-indigo-500';
+      case 'ALLOCATE_ASSET':
+      case 'MAINTENANCE_REQUEST':
+        return 'bg-amber-500';
+      case 'RESOLVE_MAINTENANCE':
+        return 'bg-green-500';
+      case 'DELETE_ASSET':
+      case 'DEACTIVATE_USER':
+        return 'bg-rose-500';
+      default:
+        return 'bg-slate-500';
+    }
+  };
+
   return (
     <DashboardLayout>
+      {/* Hackathon Control Banner */}
+      <div className="bg-gradient-to-r from-indigo-900 to-slate-900 dark:from-indigo-950 dark:to-slate-950 border border-indigo-500/20 text-white rounded-3xl p-6 mb-6 shadow-lg relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 h-64 w-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="flex-1 space-y-1.5 z-10">
+          <div className="flex items-center gap-1.5 bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider w-fit border border-indigo-400/20">
+            <Sparkles className="h-3 w-3" />
+            Hackathon Mode Activated
+          </div>
+          <h3 className="text-lg font-bold">AssetFlow Sandbox Control Hub</h3>
+          <p className="text-xs text-indigo-200/80 max-w-xl">
+            Populate your workspace instantly with realistic, structured enterprise datasets containing 20 departments, 200 employees, 1,000 assets, 300 active bookings, and compliance cycles.
+          </p>
+        </div>
+        <div className="z-10 flex-shrink-0">
+          <button
+            onClick={() => seedDemoMutation.mutate()}
+            disabled={seedDemoMutation.isPending}
+            className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-2xl text-xs font-bold shadow-md shadow-indigo-900/40 border border-indigo-400/30 transition-all active:scale-[0.98]"
+          >
+            <Database className={`h-4 w-4 ${seedDemoMutation.isPending ? 'animate-bounce' : ''}`} />
+            {seedDemoMutation.isPending ? 'Seeding Sandbox Space...' : 'Seed Bulk Sandbox Data'}
+          </button>
+        </div>
+      </div>
+
       {/* Dashboard Toolbar */}
       <div className="flex justify-between items-center mb-6">
         <div>
@@ -223,37 +281,55 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Recent Activity Feeds */}
-      <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-        <div className="flex items-center justify-between mb-4">
-          <h4 className="font-bold text-sm flex items-center gap-1.5">
-            <Activity className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-            Recent Activity Logs
+      <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="flex items-center justify-between mb-6">
+          <h4 className="font-bold text-sm flex items-center gap-1.5 text-slate-900 dark:text-white">
+            <Activity className="h-4.5 w-4.5 text-indigo-600 dark:text-indigo-400" />
+            Recent Activity Timeline
           </h4>
         </div>
-        <div className="divide-y divide-slate-100 dark:divide-slate-800/60 max-h-80 overflow-y-auto custom-scrollbar">
+        <div className="max-h-[350px] overflow-y-auto custom-scrollbar pr-2">
           {stats.recentLogs.length === 0 ? (
-            <div className="p-8 text-center text-slate-400 text-sm">
+            <div className="p-8 text-center text-slate-400 text-xs italic">
               No audit logs recorded yet.
             </div>
           ) : (
-            stats.recentLogs.map((log: any) => (
-              <div key={log._id} className="py-3 flex justify-between items-start gap-4">
-                <div>
-                  <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 capitalize">
-                    {log.action.replace('_', ' ')}
-                  </p>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    User: {log.userId?.name || 'System'} | Collection: {log.collectionName}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <span className="text-[10px] text-slate-400 flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
-                    {new Date(log.timestamp).toLocaleDateString()}
-                  </span>
-                </div>
-              </div>
-            ))
+            <div className="relative border-l-2 border-slate-100 dark:border-slate-800/60 ml-3 pl-6 space-y-5 py-1">
+              {stats.recentLogs.map((log: any) => {
+                const relativeTime = (() => {
+                  const diffMs = Date.now() - new Date(log.timestamp).getTime();
+                  const diffMins = Math.floor(diffMs / 60000);
+                  const diffHours = Math.floor(diffMins / 60);
+                  const diffDays = Math.floor(diffHours / 24);
+                  if (diffMins < 1) return 'Just now';
+                  if (diffMins < 60) return `${diffMins}m ago`;
+                  if (diffHours < 24) return `${diffHours}h ago`;
+                  if (diffDays === 1) return 'Yesterday';
+                  return new Date(log.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+                })();
+
+                return (
+                  <div key={log._id} className="relative group text-xs">
+                    {/* Circle Bullet */}
+                    <span className={`absolute -left-[33px] mt-1 h-3.5 w-3.5 rounded-full border-2 border-white dark:border-slate-900 ${getActionColor(log.action)} shadow-sm transition-transform group-hover:scale-110`} />
+                    
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 bg-slate-50/50 dark:bg-slate-850/30 p-2.5 rounded-xl border border-slate-100/40 dark:border-slate-800/10 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-all">
+                      <div>
+                        <p className="font-bold text-slate-800 dark:text-slate-200 capitalize">
+                          {log.action.replace(/_/g, ' ').toLowerCase()}
+                        </p>
+                        <p className="text-[10px] text-slate-500 mt-0.5">
+                          Actor: <strong className="text-slate-700 dark:text-slate-300">{log.userId?.name || 'System'}</strong> | Type: {log.collectionName}
+                        </p>
+                      </div>
+                      <span className="text-[10px] font-medium text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md self-end sm:self-center">
+                        {relativeTime}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           )}
         </div>
       </div>

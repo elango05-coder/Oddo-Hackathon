@@ -20,6 +20,18 @@ class DashboardController {
       next(error);
     }
   }
+
+  async seedDemoData(req, res, next) {
+    try {
+      const seedDemo = require('../database/demoSeeder');
+      const result = await seedDemo();
+      // After seeding, force rebuild the dashboard cache
+      await DashboardService.rebuildCache();
+      res.status(200).json(ApiResponse.success(result, 'Demo database seeded successfully.'));
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new DashboardController();

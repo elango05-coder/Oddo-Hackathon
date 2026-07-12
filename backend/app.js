@@ -49,6 +49,17 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Mount REST routes
 app.use('/api/v1', routes);
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  const mongoose = require('mongoose');
+  const dbStatus = mongoose.connection.readyState === 1 ? 'UP' : 'DOWN';
+  res.status(dbStatus === 'UP' ? 200 : 503).json({
+    status: 'UP',
+    database: dbStatus,
+    timestamp: new Date(),
+  });
+});
+
 // Handle undefined routes
 app.all('*', (req, res, next) => {
   next(new NotFoundError(`Can't find ${req.originalUrl} on this server`));

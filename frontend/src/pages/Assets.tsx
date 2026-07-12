@@ -21,6 +21,7 @@ export const Assets: React.FC = () => {
   const [limit] = useState(10);
   const [sortBy, setSortBy] = useState('createdAt');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [exportDropdownOpen, setExportDropdownOpen] = useState(false);
 
   // Checkout modal state
   const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
@@ -170,6 +171,62 @@ export const Assets: React.FC = () => {
     downloadAnchor.remove();
   };
 
+  const exportCSV = () => {
+    const headers = ['Asset Name', 'Asset Tag', 'Category', 'Department', 'Status', 'Serial Number', 'Purchase Cost', 'Purchase Date', 'Lifecycle Stage'];
+    const rows = items.map(asset => [
+      asset.name,
+      asset.tag,
+      typeof asset.categoryId === 'object' ? asset.categoryId?.name : 'N/A',
+      typeof asset.departmentId === 'object' ? asset.departmentId?.name : 'Stock',
+      asset.status,
+      asset.serialNumber || 'N/A',
+      asset.purchaseCost,
+      new Date(asset.purchaseDate).toLocaleDateString(),
+      asset.lifecycleStage
+    ]);
+
+    const csvContent = [headers.join(','), ...rows.map(row => row.map(val => `"${String(val).replace(/"/g, '""')}"`).join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `assetflow_inventory_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success('Inventory exported to CSV successfully!');
+  };
+
+  const exportExcel = () => {
+    const headers = ['Asset Name', 'Asset Tag', 'Category', 'Department', 'Status', 'Serial Number', 'Purchase Cost', 'Purchase Date', 'Lifecycle Stage'];
+    const rows = items.map(asset => [
+      asset.name,
+      asset.tag,
+      typeof asset.categoryId === 'object' ? asset.categoryId?.name : 'N/A',
+      typeof asset.departmentId === 'object' ? asset.departmentId?.name : 'Stock',
+      asset.status,
+      asset.serialNumber || 'N/A',
+      asset.purchaseCost,
+      new Date(asset.purchaseDate).toLocaleDateString(),
+      asset.lifecycleStage
+    ]);
+
+    const excelContent = [headers.join('\t'), ...rows.map(row => row.join('\t'))].join('\n');
+    const blob = new Blob([excelContent], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `assetflow_inventory_${new Date().toISOString().split('T')[0]}.xls`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success('Inventory exported to Excel sheet successfully!');
+  };
+
+  const exportPDF = () => {
+    window.print();
+  };
+
   return (
     <DashboardLayout>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
@@ -177,14 +234,24 @@ export const Assets: React.FC = () => {
           <h2 className="text-xl font-bold tracking-tight">Enterprise Asset Directory</h2>
           <p className="text-xs text-slate-500">Search, checkout, return, and manage corporate resources.</p>
         </div>
-        <div className="flex items-center gap-2 w-full md:w-auto">
-          <button
-            onClick={exportJSON}
-            className="flex items-center gap-1.5 px-4 py-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 transition-colors"
-          >
-            <Download className="h-4.5 w-4.5" />
-            Export Data
-          </button>
+        <div className="flex items-center gap-2 w-full md:w-auto relative">
+          <div className="relative">
+            <button
+              onClick={() => setExportDropdownOpen(!exportDropdownOpen)}
+              className="flex items-center gap-1.5 px-4 py-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 transition-colors cursor-pointer"
+            >
+              <Download className="h-4.5 w-4.5" />
+              Export Data
+            </button>
+            {exportDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl z-50 p-1.5 text-xs text-slate-750 dark:text-slate-200 flex flex-col gap-1 animate-in fade-in slide-in-from-top-2 duration-100">
+                <button onClick={() => { setExportDropdownOpen(false); exportCSV(); }} className="w-full text-left p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">Export CSV (.csv)</button>
+                <button onClick={() => { setExportDropdownOpen(false); exportExcel(); }} className="w-full text-left p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">Export Excel (.xls)</button>
+                <button onClick={() => { setExportDropdownOpen(false); exportJSON(); }} className="w-full text-left p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">Export JSON (.json)</button>
+                <button onClick={() => { setExportDropdownOpen(false); exportPDF(); }} className="w-full text-left p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors border-t border-slate-100 dark:border-slate-800 mt-1 pt-2 cursor-pointer">Print Inventory PDF</button>
+              </div>
+            )}
+          </div>
           <Link
             to="/assets/register"
             className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-semibold shadow-md shadow-indigo-100 dark:shadow-none transition-colors"

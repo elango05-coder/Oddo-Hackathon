@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { notificationService } from '../services/notificationService';
+import { assetService } from '../services/assetService';
+import { dashboardService } from '../services/dashboardService';
 import type { AppNotification } from '../types';
 import {
   LayoutDashboard,
@@ -23,7 +25,10 @@ import {
   Menu,
   X,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Search,
+  Command,
+  Database
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -43,7 +48,108 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
+  // Command Palette & Shortcut States
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [paletteSearch, setPaletteSearch] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [paletteSearching, setPaletteSearching] = useState(false);
+  const [seedingDemo, setSeedingDemo] = useState(false);
+
   const userRole = typeof user?.roleId === 'object' ? user.roleId.name : '';
+
+  // Debounced search for command palette assets
+  useEffect(() => {
+    if (!paletteSearch.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    const delayDebounce = setTimeout(async () => {
+      setPaletteSearching(true);
+      try {
+        const res = await assetService.search({ q: paletteSearch, limit: 5 });
+        setSearchResults(res.data || []);
+      } catch (err) {
+        // fail silently
+      } finally {
+        setPaletteSearching(false);
+      }
+    }, 250);
+
+    return () => clearTimeout(delayDebounce);
+  }, [paletteSearch]);
+
+  // Keyboard Shortcuts Listener
+  useEffect(() => {
+    let lastKey = '';
+    let timer: any;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Toggle Command Palette (Ctrl+K or Cmd+K)
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setCommandPaletteOpen(prev => !prev);
+        return;
+      }
+
+      // Escape key to close Command Palette
+      if (e.key === 'Escape') {
+        setCommandPaletteOpen(false);
+        return;
+      }
+
+      // Ignore shortcuts when user is focused inside input elements
+      if (
+        document.activeElement?.tagName === 'INPUT' ||
+        document.activeElement?.tagName === 'TEXTAREA' ||
+        document.activeElement?.getAttribute('contenteditable') === 'true'
+      ) {
+        return;
+      }
+
+      // Sequential key shortcuts (g then key)
+      const key = e.key.toLowerCase();
+      if (lastKey === 'g') {
+        lastKey = '';
+        clearTimeout(timer);
+        if (key === 'd') { e.preventDefault(); navigate('/'); }
+        else if (key === 'a') { e.preventDefault(); navigate('/assets'); }
+        else if (key === 'm') { e.preventDefault(); navigate('/maintenance'); }
+        else if (key === 'b') { e.preventDefault(); navigate('/bookings'); }
+        else if (key === 's') { e.preventDefault(); navigate('/settings'); }
+        else if (key === 'n') { e.preventDefault(); navigate('/notifications'); }
+      } else if (key === 'g') {
+        lastKey = 'g';
+        timer = setTimeout(() => {
+          lastKey = '';
+        }, 1000);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      clearTimeout(timer);
+    };
+  }, [navigate]);
+
+  const handleSeedDemo = async () => {
+    setSeedingDemo(true);
+    const loadToast = toast.loading('Populating sandbox space with mock records (1,000 assets, 200 employees)...');
+    try {
+      await dashboardService.seedDemo();
+      toast.dismiss(loadToast);
+      toast.success('Sandbox database seeded successfully!');
+      setCommandPaletteOpen(false);
+      // Reload page to reflect changes
+      window.location.reload();
+    } catch (e: any) {
+      toast.dismiss(loadToast);
+      toast.error(e.response?.data?.message || 'Failed to seed sandbox database.');
+    } finally {
+      setSeedingDemo(false);
+    }
+  };
 
   // Load notifications
   const fetchNotifications = async () => {
@@ -304,6 +410,15 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Desktop top header search box */}
+            <button
+              onClick={() => setCommandPaletteOpen(true)}
+              className="hidden md:flex items-center gap-2.5 px-3 py-1.5 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-400 rounded-xl text-xs w-48 text-left transition-all"
+            >
+              <Search className="h-3.5 w-3.5" />
+              <span>Search or Ctrl+K...</span>
+            </button>
+
             {/* Dark mode switcher */}
             <button
               onClick={toggleTheme}
@@ -348,17 +463,17 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                     ) : (
                       notifications.map((notif) => (
                         <div
-                          key={notif._id}
-                          className={`p-4 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/40 ${
-                            !notif.isRead ? 'bg-indigo-50/30 dark:bg-indigo-950/10' : ''
-                          }`}
+                           key={notif._id}
+                           className={`p-4 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/40 ${
+                             !notif.isRead ? 'bg-indigo-50/30 dark:bg-indigo-950/10' : ''
+                           }`}
                         >
-                          <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
-                            {!notif.isRead && <span className="h-1.5 w-1.5 bg-indigo-600 dark:bg-indigo-400 rounded-full flex-shrink-0" />}
-                            {notif.title}
-                          </p>
-                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{notif.message}</p>
-                          <p className="text-[10px] text-slate-400 mt-2">{new Date(notif.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                           <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
+                             {!notif.isRead && <span className="h-1.5 w-1.5 bg-indigo-600 dark:bg-indigo-400 rounded-full flex-shrink-0" />}
+                             {notif.title}
+                           </p>
+                           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{notif.message}</p>
+                           <p className="text-[10px] text-slate-400 mt-2">{new Date(notif.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                         </div>
                       ))
                     )}
@@ -393,6 +508,176 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
           {children}
         </main>
       </div>
+
+      {/* Command Palette Modal Overlay */}
+      {commandPaletteOpen && (
+        <div
+          className="fixed inset-0 z-[100] bg-slate-950/65 backdrop-blur-sm flex items-start justify-center pt-20 px-4"
+          onClick={() => setCommandPaletteOpen(false)}
+        >
+          <div
+            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Search Input Box */}
+            <div className="flex items-center gap-3 px-4 py-3.5 border-b border-slate-100 dark:border-slate-800">
+              <Search className="h-5 w-5 text-slate-400" />
+              <input
+                type="text"
+                autoFocus
+                placeholder="Type a command or search assets..."
+                value={paletteSearch}
+                onChange={(e) => setPaletteSearch(e.target.value)}
+                className="flex-1 bg-transparent border-none text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-none"
+              />
+              <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-1 rounded-md font-bold font-mono">ESC</span>
+            </div>
+
+            {/* Results / Commands Scroll List */}
+            <div className="max-h-80 overflow-y-auto custom-scrollbar p-3 space-y-2">
+              {/* Searching loader */}
+              {paletteSearching && (
+                <div className="py-8 text-center text-slate-400 text-xs flex items-center justify-center gap-1.5">
+                  <span className="h-4 w-4 border-2 border-indigo-600 border-t-transparent animate-spin rounded-full" />
+                  Searching assets database...
+                </div>
+              )}
+
+              {/* Dynamic search results list */}
+              {!paletteSearching && paletteSearch.trim().length > 0 && (
+                <div>
+                  <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-1.5">Matching Inventory Assets ({searchResults.length})</span>
+                  {searchResults.length === 0 ? (
+                    <div className="py-6 text-center text-slate-400 text-xs italic">
+                      No assets found matching "{paletteSearch}".
+                    </div>
+                  ) : (
+                    searchResults.map((asset) => (
+                      <button
+                        key={asset._id}
+                        onClick={() => {
+                          setCommandPaletteOpen(false);
+                          setPaletteSearch('');
+                          navigate(`/assets/${asset._id}`);
+                        }}
+                        className="w-full flex items-center justify-between text-left p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-850/40 transition-colors"
+                      >
+                        <div>
+                          <p className="text-xs font-bold text-slate-900 dark:text-white">{asset.name}</p>
+                          <p className="text-[10px] text-slate-500 font-mono mt-0.5">{asset.tag} | SN: {asset.serialNumber || 'N/A'}</p>
+                        </div>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                          asset.status === 'Available' ? 'bg-green-50 text-green-700' : 'bg-indigo-50 text-indigo-700'
+                        }`}>{asset.status}</span>
+                      </button>
+                    ))
+                  )}
+                </div>
+              )}
+
+              {/* Default action keys list */}
+              {paletteSearch.trim().length === 0 && (
+                <div className="space-y-1">
+                  <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Quick Navigation Commands</span>
+
+                  {/* Dashboard */}
+                  <button
+                    onClick={() => { setCommandPaletteOpen(false); navigate('/'); }}
+                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-850/40 text-left transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <LayoutDashboard className="h-4.5 w-4.5 text-slate-400" />
+                      <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">Go to Dashboard</span>
+                    </div>
+                    <span className="text-[10px] font-mono text-slate-400">g d</span>
+                  </button>
+
+                  {/* Assets */}
+                  <button
+                    onClick={() => { setCommandPaletteOpen(false); navigate('/assets'); }}
+                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-850/40 text-left transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Laptop className="h-4.5 w-4.5 text-slate-400" />
+                      <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">Go to Assets Directory</span>
+                    </div>
+                    <span className="text-[10px] font-mono text-slate-400">g a</span>
+                  </button>
+
+                  {/* Bookings */}
+                  <button
+                    onClick={() => { setCommandPaletteOpen(false); navigate('/bookings'); }}
+                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-850/40 text-left transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <CalendarDays className="h-4.5 w-4.5 text-slate-400" />
+                      <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">Go to Bookings Calendar</span>
+                    </div>
+                    <span className="text-[10px] font-mono text-slate-400">g b</span>
+                  </button>
+
+                  {/* Maintenance */}
+                  <button
+                    onClick={() => { setCommandPaletteOpen(false); navigate('/maintenance'); }}
+                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-850/40 text-left transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Wrench className="h-4.5 w-4.5 text-slate-400" />
+                      <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">Go to Maintenance Lifecycle</span>
+                    </div>
+                    <span className="text-[10px] font-mono text-slate-400">g m</span>
+                  </button>
+
+                  {/* Settings */}
+                  <button
+                    onClick={() => { setCommandPaletteOpen(false); navigate('/settings'); }}
+                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-850/40 text-left transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Users className="h-4.5 w-4.5 text-slate-400" />
+                      <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">Go to Account Settings</span>
+                    </div>
+                    <span className="text-[10px] font-mono text-slate-400">g s</span>
+                  </button>
+
+                  {/* Theme Switcher */}
+                  <button
+                    onClick={() => { setCommandPaletteOpen(false); toggleTheme(); }}
+                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-850/40 text-left transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      {theme === 'dark' ? <Sun className="h-4.5 w-4.5 text-slate-400" /> : <Moon className="h-4.5 w-4.5 text-slate-400" />}
+                      <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">Toggle Interface Theme</span>
+                    </div>
+                  </button>
+
+                  {/* Sandbox Seeding Control */}
+                  <div className="border-t border-slate-150 dark:border-slate-800/80 pt-2 mt-2">
+                    <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">System Commands</span>
+                    <button
+                      onClick={handleSeedDemo}
+                      disabled={seedingDemo}
+                      className="w-full flex items-center justify-between p-3 rounded-2xl bg-indigo-50/20 dark:bg-indigo-950/20 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left border border-indigo-100/30 dark:border-indigo-900/10 transition-colors disabled:opacity-50"
+                    >
+                      <div className="flex items-center gap-3 text-indigo-600 dark:text-indigo-400">
+                        <Database className="h-4.5 w-4.5 animate-pulse" />
+                        <span className="text-xs font-bold">Seed Sandbox Demo Dataset</span>
+                      </div>
+                      <span className="text-[9px] bg-indigo-600/10 text-indigo-600 px-2 py-0.5 rounded font-bold uppercase">Reset Data</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Palette Footer metadata */}
+            <div className="px-4 py-2.5 bg-slate-50 dark:bg-slate-800/40 border-t border-slate-150 dark:border-slate-800 text-slate-400 text-[10px] flex items-center justify-between">
+              <span>Press <kbd className="font-sans font-bold bg-white dark:bg-slate-900 px-1 border rounded shadow-sm">esc</kbd> to exit</span>
+              <span className="flex items-center gap-1"><Command className="h-3 w-3" /> Ctrl+K to open anywhere</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

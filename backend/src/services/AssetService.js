@@ -141,7 +141,7 @@ class AssetService {
   }
 
   async searchAssets(queryParams) {
-    const { search, categoryId, departmentId, status, sortBy, order, page = 1, limit = 10 } = queryParams;
+    const { search, q, categoryId, departmentId, status, sortBy, order, page = 1, limit = 10 } = queryParams;
 
     const filter = {};
 
@@ -151,11 +151,12 @@ class AssetService {
     if (status) filter.status = status;
 
     // Apply search keyword
-    if (search) {
+    const keyword = search || q;
+    if (keyword) {
       filter.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { tag: { $regex: search, $options: 'i' } },
-        { serialNumber: { $regex: search, $options: 'i' } },
+        { name: { $regex: keyword, $options: 'i' } },
+        { tag: { $regex: keyword, $options: 'i' } },
+        { serialNumber: { $regex: keyword, $options: 'i' } },
       ];
     }
 

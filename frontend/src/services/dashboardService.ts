@@ -10,4 +10,9 @@ export const dashboardService = {
     const response = await api.post('/dashboard/rebuild-cache');
     return response.data;
   },
+  
+  async seedDemo() {
+    const response = await api.post('/dashboard/seed-demo');
+    return response.data;
+  },
 };

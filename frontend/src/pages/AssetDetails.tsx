@@ -4,7 +4,8 @@ import { useParams, Link } from 'react-router-dom';
 import { assetService } from '../services/assetService';
 import { DashboardLayout } from '../layouts/DashboardLayout';
 import { QRCodeSVG } from 'qrcode.react';
-import { ArrowLeft, ShieldCheck, Wrench, FileText, History, Printer, Loader2 } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, Wrench, FileText, History, Printer, Loader2, Download } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export const AssetDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -51,6 +52,21 @@ export const AssetDetails: React.FC = () => {
 
   const handlePrintQR = () => {
     window.print();
+  };
+
+  const downloadQRCode = () => {
+    const svg = document.querySelector('#qr-code-print svg');
+    if (!svg) return;
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+    const svgUrl = URL.createObjectURL(svgBlob);
+    const downloadLink = document.createElement('a');
+    downloadLink.href = svgUrl;
+    downloadLink.download = `qrcode_${asset.tag}.svg`;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    toast.success('QR Code SVG downloaded successfully.');
   };
 
   return (
@@ -267,22 +283,99 @@ export const AssetDetails: React.FC = () => {
           </div>
         )}
 
-        {/* Tab 4: QR Code render */}
+        {/* Tab 4: QR Code render & Print Asset Card */}
         {activeTab === 'qr' && (
-          <div className="flex flex-col items-center justify-center py-10 space-y-6">
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col items-center shadow-md print:shadow-none print:border-none" id="qr-code-print">
-              <QRCodeSVG value={asset.tag} size={150} level="H" />
-              <span className="font-mono font-bold mt-4 tracking-widest text-slate-900">{asset.tag}</span>
-              <span className="text-[10px] text-slate-400 mt-1 uppercase font-semibold">AssetFlow System Barcode</span>
+          <div className="py-2">
+            {/* The actual printable corporate asset badge (hidden on screen, visible only when printing!) */}
+            <div className="hidden print:block fixed inset-0 bg-white z-[999] flex items-center justify-center p-8">
+              <div className="w-[3.5in] h-[2.2in] border-2 border-slate-950 rounded-2xl p-4 flex flex-col justify-between bg-white text-black font-sans shadow-sm">
+                <div className="flex justify-between items-start border-b-2 border-slate-950 pb-1.5 mb-2">
+                  <div>
+                    <h3 className="text-sm font-bold tracking-tight uppercase">Corporate Property Badge</h3>
+                    <p className="text-[8px] text-slate-500 uppercase tracking-widest font-semibold mt-0.5 font-sans">AssetFlow ERP Registry</p>
+                  </div>
+                  <span className="text-[10px] font-mono font-bold">{asset.tag}</span>
+                </div>
+                <div className="flex gap-4 flex-1 items-center">
+                  <div className="flex-1 space-y-1 text-[10px] font-sans">
+                    <p><strong className="text-slate-500 uppercase text-[8px] tracking-wide block font-sans">Name</strong> {asset.name}</p>
+                    <p><strong className="text-slate-500 uppercase text-[8px] tracking-wide block font-sans">Category</strong> {category?.name || 'N/A'}</p>
+                    <p><strong className="text-slate-500 uppercase text-[8px] tracking-wide block font-sans">Department</strong> {department?.name || 'Stock'}</p>
+                  </div>
+                  <div className="flex-shrink-0 flex flex-col items-center gap-1">
+                    <QRCodeSVG value={asset.tag} size={65} level="H" />
+                    <span className="text-[8px] font-mono font-bold uppercase">Scan to Verify</span>
+                  </div>
+                </div>
+                <div className="border-t-2 border-slate-950 pt-1.5 mt-2 flex justify-between items-center text-[7px] text-slate-500 uppercase font-semibold font-sans">
+                  <span>Registered: {new Date(asset.purchaseDate).toLocaleDateString()}</span>
+                  <span>If found, return to IT Helpdesk</span>
+                </div>
+              </div>
             </div>
 
-            <button
-              onClick={handlePrintQR}
-              className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-semibold shadow-md shadow-indigo-100 dark:shadow-none print:hidden transition-colors"
-            >
-              <Printer className="h-4 w-4" />
-              Print QR Label
-            </button>
+            {/* Screen layout mockup */}
+            <div className="flex flex-col lg:flex-row items-center justify-center gap-12 py-6 print:hidden">
+              {/* Left Column: QR Code Box */}
+              <div className="bg-slate-50 dark:bg-slate-850 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col items-center shadow-md dark:shadow-none" id="qr-code-print">
+                <QRCodeSVG value={asset.tag} size={150} level="H" />
+                <span className="font-mono font-bold mt-4 tracking-widest text-slate-900 dark:text-slate-100">{asset.tag}</span>
+                <span className="text-[10px] text-slate-400 mt-1 uppercase font-semibold">AssetFlow System Barcode</span>
+                <div className="flex gap-2 mt-4">
+                  <button
+                    onClick={downloadQRCode}
+                    className="flex items-center gap-1 px-3 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-[10px] font-bold transition-colors cursor-pointer"
+                  >
+                    <Download className="h-3 w-3" />
+                    SVG Tag
+                  </button>
+                  <button
+                    onClick={handlePrintQR}
+                    className="flex items-center gap-1 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-[10px] font-bold transition-colors cursor-pointer"
+                  >
+                    <Printer className="h-3 w-3" />
+                    Print Label
+                  </button>
+                </div>
+              </div>
+
+              {/* Right Column: Premium Asset Badge Card Mockup */}
+              <div className="space-y-4">
+                <h4 className="font-bold text-xs uppercase tracking-wider text-slate-450 dark:text-slate-400">Corporate Property Asset Card</h4>
+                <div className="w-[3.5in] h-[2.2in] border border-slate-200 dark:border-slate-800 rounded-3xl p-5 flex flex-col justify-between bg-gradient-to-br from-white to-slate-550/20 dark:from-slate-900 dark:to-slate-950 text-slate-900 dark:text-white shadow-lg relative overflow-hidden">
+                  <div className="absolute right-0 top-0 translate-x-8 -translate-y-8 h-24 w-24 bg-indigo-500/10 rounded-full blur-xl pointer-events-none" />
+                  <div className="flex justify-between items-start border-b border-slate-200 dark:border-slate-800 pb-2 mb-2">
+                    <div>
+                      <h3 className="text-xs font-bold uppercase tracking-wide">Corporate Property</h3>
+                      <p className="text-[8px] text-indigo-600 dark:text-indigo-400 uppercase tracking-widest font-bold mt-0.5">Asset Registry Badge</p>
+                    </div>
+                    <span className="text-[10px] font-mono font-bold tracking-wider">{asset.tag}</span>
+                  </div>
+                  <div className="flex gap-4 flex-1 items-center">
+                    <div className="flex-1 space-y-1.5 text-[9px] min-w-0">
+                      <p className="truncate"><span className="text-slate-400 uppercase text-[7px] tracking-wide block">Name</span> <strong className="text-slate-850 dark:text-slate-200">{asset.name}</strong></p>
+                      <p className="truncate"><span className="text-slate-400 uppercase text-[7px] tracking-wide block">Category</span> <strong className="text-slate-850 dark:text-slate-200">{category?.name || 'N/A'}</strong></p>
+                      <p className="truncate"><span className="text-slate-400 uppercase text-[7px] tracking-wide block">Department</span> <strong className="text-slate-850 dark:text-slate-200">{department?.name || 'Stock'}</strong></p>
+                    </div>
+                    <div className="flex-shrink-0 flex flex-col items-center gap-1.5 p-1 bg-white rounded-lg border border-slate-200">
+                      <QRCodeSVG value={asset.tag} size={60} level="H" />
+                      <span className="text-[7px] font-mono text-slate-500 font-bold uppercase tracking-wider">Property QR</span>
+                    </div>
+                  </div>
+                  <div className="border-t border-slate-200 dark:border-slate-800 pt-2 mt-2 flex justify-between items-center text-[7px] text-slate-400 uppercase font-semibold">
+                    <span>Registered: {new Date(asset.purchaseDate).toLocaleDateString()}</span>
+                    <span>IT Department Property</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => window.print()}
+                  className="flex items-center gap-1.5 px-4 py-2 border border-indigo-200 dark:border-indigo-800/40 bg-indigo-50/30 dark:bg-indigo-950/20 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-550/20 rounded-xl text-xs font-bold transition-all cursor-pointer w-full justify-center"
+                >
+                  <Printer className="h-3.5 w-3.5" />
+                  Print Physical ID Badge Card
+                </button>
+              </div>
+            </div>
           </div>
         )}
 

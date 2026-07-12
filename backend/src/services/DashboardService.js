@@ -39,6 +39,16 @@ class DashboardService {
     const lostAssets = await AssetRepository.count({ status: ASSET_STATES.LOST });
     const totalAssets = await AssetRepository.count({});
 
+    // Calculate total value of assets
+    const totalValueResult = await AssetRepository.aggregate([
+      { $match: { isDeleted: { $ne: true } } },
+      { $group: { _id: null, total: { $sum: '$purchaseCost' } } }
+    ]);
+    const totalValue = totalValueResult[0]?.total || 0;
+
+    const activeAllocations = allocatedAssets;
+    const openMaintenance = underMaintenance;
+
     // 2. Transits & Returns
     const overdueAllocations = await AssetAllocationRepository.count({ status: 'Overdue' });
     const pendingTransfers = await TransferRequestRepository.count({ status: 'Pending' });
@@ -52,7 +62,7 @@ class DashboardService {
     const upcomingBookings = await BookingRepository.count({ status: BOOKING_STATUS.UPCOMING });
 
     // 5. Recent Activity Logs
-    const recentActivities = await ActivityLogRepository.find({
+    const recentActivities = await ActivityLogRepository.find({}, {
       populate: { path: 'userId', select: 'name email' },
       sort: { timestamp: -1 },
       limit: 10,
@@ -119,7 +129,35 @@ class DashboardService {
       },
     ]);
 
+    // Category distribution formatted for the frontend PieChart
+    const categoryDistribution = categorySummary.map(item => ({
+      categoryName: item.name,
+      count: item.count
+    }));
+
+    // Group resolved/active maintenance requests by month to show spending trends
+    const maintenanceCosts = await MaintenanceRequestRepository.aggregate([
+      { $match: { isDeleted: { $ne: true }, status: 'Resolved' } },
+      {
+        $group: {
+          _id: { $dateToString: { format: '%Y-%m', date: '$createdAt' } },
+          totalCost: { $sum: { $ifNull: ['$actualCost', '$estimatedCost'] } }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+
     return {
+      // React frontend Dashboard.tsx exact keys:
+      totalAssets,
+      totalValue,
+      activeAllocations,
+      openMaintenance,
+      recentLogs: recentActivities,
+      categoryDistribution,
+      maintenanceCosts,
+
+      // Legacy support:
       kpis: {
         availableAssets,
         allocatedAssets,

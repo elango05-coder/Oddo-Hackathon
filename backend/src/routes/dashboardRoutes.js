@@ -9,5 +9,6 @@ router.use(authenticate);
 
 router.get('/', requirePermission(PERMISSIONS.DASHBOARD_READ), DashboardController.getDashboardData);
 router.post('/rebuild-cache', requirePermission(PERMISSIONS.DASHBOARD_READ), DashboardController.rebuildCache);
+router.post('/seed-demo', requirePermission(PERMISSIONS.DASHBOARD_READ), DashboardController.seedDemoData);
 
 module.exports = router;
