@@ -46,8 +46,10 @@ export const Bookings: React.FC = () => {
 
   const handleOpenReschedule = (booking: any) => {
     setSelectedBooking(booking);
-    setRescheduleStart(new Date(booking.startDate).toISOString().slice(0, 16));
-    setRescheduleEnd(new Date(booking.endDate).toISOString().slice(0, 16));
+    const start = booking.startTime || booking.startDate;
+    const end = booking.endTime || booking.endDate;
+    setRescheduleStart(new Date(start).toISOString().slice(0, 16));
+    setRescheduleEnd(new Date(end).toISOString().slice(0, 16));
     setRescheduleModalOpen(true);
   };
 
@@ -125,9 +127,9 @@ export const Bookings: React.FC = () => {
     return {
       id: b._id,
       title: `${assetName} - ${bookedByName}`,
-      start: b.startDate,
-      end: b.endDate,
-      backgroundColor: b.status === 'Confirmed' ? '#4f46e5' : '#94a3b8',
+      start: b.startTime || b.startDate,
+      end: b.endTime || b.endDate,
+      backgroundColor: b.status === 'Upcoming' ? '#4f46e5' : '#94a3b8',
       borderColor: 'transparent',
       extendedProps: b,
     };
@@ -208,17 +210,17 @@ export const Bookings: React.FC = () => {
                   <p className="text-slate-500">Booked By: <strong className="text-slate-800">{typeof selectedBooking.bookedById === 'object' ? selectedBooking.bookedById.name : 'User'}</strong></p>
                   <p className="text-slate-500 flex items-center gap-1">
                     <Clock className="h-3.5 w-3.5 text-indigo-500" />
-                    <span>Start: <strong>{new Date(selectedBooking.startDate).toLocaleString()}</strong></span>
+                    <span>Start: <strong>{new Date(selectedBooking.startTime || selectedBooking.startDate).toLocaleString()}</strong></span>
                   </p>
                   <p className="text-slate-500 flex items-center gap-1">
                     <Clock className="h-3.5 w-3.5 text-indigo-500" />
-                    <span>End: <strong>{new Date(selectedBooking.endDate).toLocaleString()}</strong></span>
+                    <span>End: <strong>{new Date(selectedBooking.endTime || selectedBooking.endDate).toLocaleString()}</strong></span>
                   </p>
-                  <p className="text-slate-500">Purpose: <strong className="text-slate-800">{selectedBooking.purpose}</strong></p>
-                  <p className="text-slate-500">Status: <span className="px-2 py-0.5 bg-green-55/10 text-green-650 font-bold rounded">{selectedBooking.status}</span></p>
+                  <p className="text-slate-500">Purpose: <strong className="text-slate-800">{selectedBooking.reason || selectedBooking.purpose || 'N/A'}</strong></p>
+                  <p className="text-slate-500">Status: <span className="px-2 py-0.5 bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400 font-bold rounded">{selectedBooking.status}</span></p>
                 </div>
 
-                {selectedBooking.status === 'Confirmed' && (
+                {selectedBooking.status === 'Upcoming' && (
                   <div className="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-800/80">
                     <button
                       onClick={() => handleOpenReschedule(selectedBooking)}

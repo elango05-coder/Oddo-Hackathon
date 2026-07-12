@@ -7,7 +7,11 @@ const { BOOKING_STATUS } = require('../constants');
 
 class BookingService {
   async bookResource(bookingData, triggeredByUser) {
-    const { resourceId, startTime, endTime, reason } = bookingData;
+    // Accept both naming conventions (frontend uses startDate/endDate/purpose)
+    const resourceId = bookingData.resourceId;
+    const startTime = bookingData.startTime || bookingData.startDate;
+    const endTime = bookingData.endTime || bookingData.endDate;
+    const reason = bookingData.reason || bookingData.purpose || '';
 
     // 1. Verify resource exists
     const resource = await AssetRepository.findById(resourceId);
@@ -60,7 +64,9 @@ class BookingService {
   }
 
   async rescheduleBooking(id, reschedData, triggeredByUser) {
-    const { startTime, endTime } = reschedData;
+    // Accept both naming conventions
+    const startTime = reschedData.startTime || reschedData.startDate;
+    const endTime = reschedData.endTime || reschedData.endDate;
     
     const booking = await BookingRepository.findById(id);
     if (!booking || booking.status !== BOOKING_STATUS.UPCOMING) {
@@ -142,13 +148,31 @@ class BookingService {
 
   async getCalendar(resourceId, startDate, endDate) {
     const filter = {
-      resourceId,
       status: { $ne: BOOKING_STATUS.CANCELLED },
-      startTime: { $gte: new Date(startDate) },
-      endTime: { $lte: new Date(endDate) },
     };
 
-    return await BookingRepository.find(filter, { populate: 'bookedById' });
+    // Optional resource filter
+    if (resourceId) {
+      filter.resourceId = resourceId;
+    }
+
+    // Only add date range if valid dates provided
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : null;
+    
+    if (start && !isNaN(start.getTime())) {
+      filter.startTime = { $gte: start };
+    }
+    if (end && !isNaN(end.getTime())) {
+      filter.endTime = { $lte: end };
+    }
+
+    return await BookingRepository.find(filter, { 
+      populate: [
+        { path: 'bookedById', select: 'name email' },
+        { path: 'resourceId', select: 'name tag' }
+      ]
+    });
   }
 
   // Cron Job midnight executor: reminders
