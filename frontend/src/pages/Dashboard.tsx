@@ -326,7 +326,7 @@ export const Dashboard: React.FC = () => {
                     {/* Circle Bullet */}
                     <span className={`absolute -left-[33px] mt-1 h-3.5 w-3.5 rounded-full border-2 border-white dark:border-slate-900 ${getActionColor(log.action)} shadow-sm transition-transform group-hover:scale-110`} />
                     
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 bg-slate-50/50 dark:bg-slate-850/30 p-2.5 rounded-xl border border-slate-100/40 dark:border-slate-800/10 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-all">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 bg-slate-50/50 dark:bg-slate-800/30 p-2.5 rounded-xl border border-slate-100/40 dark:border-slate-800/10 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-all">
                       <div>
                         <p className="font-bold text-slate-800 dark:text-slate-200 capitalize">
                           {log.action.replace(/_/g, ' ').toLowerCase()}

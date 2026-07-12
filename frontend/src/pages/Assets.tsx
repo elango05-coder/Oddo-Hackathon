@@ -273,7 +273,7 @@ export const Assets: React.FC = () => {
             type="text"
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            className="block w-full pl-9 pr-3 py-1.5 border border-slate-200 dark:border-slate-850 bg-slate-50 dark:bg-slate-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-100"
+            className="block w-full pl-9 pr-3 py-1.5 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-100"
             placeholder="Search name, tag, serial..."
           />
         </div>
@@ -282,7 +282,7 @@ export const Assets: React.FC = () => {
         <select
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
-          className="block w-full px-3 py-1.5 border border-slate-200 dark:border-slate-850 bg-slate-50 dark:bg-slate-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-100"
+          className="block w-full px-3 py-1.5 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-100"
         >
           <option value="">All Categories</option>
           {categories.map((c) => (
@@ -296,7 +296,7 @@ export const Assets: React.FC = () => {
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="block w-full px-3 py-1.5 border border-slate-200 dark:border-slate-850 bg-slate-50 dark:bg-slate-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-100"
+          className="block w-full px-3 py-1.5 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-100"
         >
           <option value="">All Statuses</option>
           <option value="Available">Available</option>
@@ -396,7 +396,7 @@ export const Assets: React.FC = () => {
                           {asset.status === 'Available' && (
                             <button
                               onClick={() => handleOpenCheckout(asset)}
-                              className="text-xs bg-indigo-650 hover:bg-indigo-700 text-white font-semibold px-2.5 py-1 rounded-lg"
+                              className="text-xs bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-2.5 py-1 rounded-lg"
                             >
                               Checkout
                             </button>
@@ -471,7 +471,7 @@ export const Assets: React.FC = () => {
                   required
                   value={assigneeId}
                   onChange={(e) => setAssigneeId(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                 >
                   <option value="">Select Employee</option>
                   {employees.map((emp) => (
@@ -490,7 +490,7 @@ export const Assets: React.FC = () => {
                   required
                   value={expectedReturnDate}
                   onChange={(e) => setExpectedReturnDate(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                 />
               </div>
 
@@ -502,7 +502,7 @@ export const Assets: React.FC = () => {
                   required
                   value={conditionOnAllocation}
                   onChange={(e) => setConditionOnAllocation(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                   placeholder="Brand new in box"
                 />
               </div>
@@ -511,7 +511,7 @@ export const Assets: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setCheckoutModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-850 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
                 >
                   Cancel
                 </button>
@@ -545,7 +545,7 @@ export const Assets: React.FC = () => {
                   required
                   value={conditionOnReturn}
                   onChange={(e) => setConditionOnReturn(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                   placeholder="Excellent, no damage"
                 />
               </div>
@@ -554,7 +554,7 @@ export const Assets: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setReturnModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-850 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
                 >
                   Cancel
                 </button>

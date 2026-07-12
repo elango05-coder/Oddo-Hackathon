@@ -560,7 +560,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                           setPaletteSearch('');
                           navigate(`/assets/${asset._id}`);
                         }}
-                        className="w-full flex items-center justify-between text-left p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-850/40 transition-colors"
+                        className="w-full flex items-center justify-between text-left p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
                       >
                         <div>
                           <p className="text-xs font-bold text-slate-900 dark:text-white">{asset.name}</p>
@@ -583,7 +583,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                   {/* Dashboard */}
                   <button
                     onClick={() => { setCommandPaletteOpen(false); navigate('/'); }}
-                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-850/40 text-left transition-colors"
+                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/40 text-left transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <LayoutDashboard className="h-4.5 w-4.5 text-slate-400" />
@@ -595,7 +595,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                   {/* Assets */}
                   <button
                     onClick={() => { setCommandPaletteOpen(false); navigate('/assets'); }}
-                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-850/40 text-left transition-colors"
+                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/40 text-left transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <Laptop className="h-4.5 w-4.5 text-slate-400" />
@@ -607,7 +607,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                   {/* Bookings */}
                   <button
                     onClick={() => { setCommandPaletteOpen(false); navigate('/bookings'); }}
-                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-850/40 text-left transition-colors"
+                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/40 text-left transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <CalendarDays className="h-4.5 w-4.5 text-slate-400" />
@@ -619,7 +619,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                   {/* Maintenance */}
                   <button
                     onClick={() => { setCommandPaletteOpen(false); navigate('/maintenance'); }}
-                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-850/40 text-left transition-colors"
+                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/40 text-left transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <Wrench className="h-4.5 w-4.5 text-slate-400" />
@@ -631,7 +631,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                   {/* Settings */}
                   <button
                     onClick={() => { setCommandPaletteOpen(false); navigate('/settings'); }}
-                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-850/40 text-left transition-colors"
+                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/40 text-left transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <Users className="h-4.5 w-4.5 text-slate-400" />
@@ -643,7 +643,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                   {/* Theme Switcher */}
                   <button
                     onClick={() => { setCommandPaletteOpen(false); toggleTheme(); }}
-                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-850/40 text-left transition-colors"
+                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/40 text-left transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       {theme === 'dark' ? <Sun className="h-4.5 w-4.5 text-slate-400" /> : <Moon className="h-4.5 w-4.5 text-slate-400" />}
@@ -652,7 +652,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                   </button>
 
                   {/* Sandbox Seeding Control */}
-                  <div className="border-t border-slate-150 dark:border-slate-800/80 pt-2 mt-2">
+                  <div className="border-t border-slate-100 dark:border-slate-800/80 pt-2 mt-2">
                     <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">System Commands</span>
                     <button
                       onClick={handleSeedDemo}
@@ -671,7 +671,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
             </div>
 
             {/* Palette Footer metadata */}
-            <div className="px-4 py-2.5 bg-slate-50 dark:bg-slate-800/40 border-t border-slate-150 dark:border-slate-800 text-slate-400 text-[10px] flex items-center justify-between">
+            <div className="px-4 py-2.5 bg-slate-50 dark:bg-slate-800/40 border-t border-slate-100 dark:border-slate-800 text-slate-400 text-[10px] flex items-center justify-between">
               <span>Press <kbd className="font-sans font-bold bg-white dark:bg-slate-900 px-1 border rounded shadow-sm">esc</kbd> to exit</span>
               <span className="flex items-center gap-1"><Command className="h-3 w-3" /> Ctrl+K to open anywhere</span>
             </div>

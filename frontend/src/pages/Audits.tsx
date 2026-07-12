@@ -231,7 +231,7 @@ export const Audits: React.FC = () => {
                 <div>
                   <div className="flex justify-between items-start">
                     <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold tracking-wide uppercase ${
-                      cycle.status === 'InProgress' ? 'bg-indigo-50 text-indigo-700' : cycle.status === 'Scheduled' ? 'bg-slate-100 text-slate-600' : 'bg-red-55/15 text-red-650'
+                      cycle.status === 'InProgress' ? 'bg-indigo-50 text-indigo-700' : cycle.status === 'Scheduled' ? 'bg-slate-100 text-slate-600' : 'bg-red-50/15 text-red-600'
                     }`}>
                       {cycle.status}
                     </span>
@@ -244,7 +244,7 @@ export const Audits: React.FC = () => {
                   {cycle.status === 'Scheduled' && (
                     <button
                       onClick={() => startMutation.mutate(cycle._id)}
-                      className="flex items-center gap-1.5 px-3 py-1 bg-indigo-55/10 text-indigo-600 hover:bg-indigo-50 text-xs font-semibold rounded-lg"
+                      className="flex items-center gap-1.5 px-3 py-1 bg-indigo-50/10 text-indigo-600 hover:bg-indigo-50 text-xs font-semibold rounded-lg"
                     >
                       <Play className="h-3.5 w-3.5" />
                       Start
@@ -254,14 +254,14 @@ export const Audits: React.FC = () => {
                     <>
                       <button
                         onClick={() => handleOpenVerify(cycle._id)}
-                        className="flex items-center gap-1.5 px-3 py-1 bg-green-55/10 text-green-600 hover:bg-green-50 text-xs font-semibold rounded-lg"
+                        className="flex items-center gap-1.5 px-3 py-1 bg-green-50/10 text-green-600 hover:bg-green-50 text-xs font-semibold rounded-lg"
                       >
                         <ScanLine className="h-3.5 w-3.5" />
                         Scan/Verify
                       </button>
                       <button
                         onClick={() => closeMutation.mutate(cycle._id)}
-                        className="flex items-center gap-1.5 px-3 py-1 bg-red-55/10 text-red-600 hover:bg-red-55/15 text-xs font-semibold rounded-lg"
+                        className="flex items-center gap-1.5 px-3 py-1 bg-red-50/10 text-red-600 hover:bg-red-50/15 text-xs font-semibold rounded-lg"
                       >
                         <Power className="h-3.5 w-3.5" />
                         Close
@@ -317,7 +317,7 @@ export const Audits: React.FC = () => {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-855 rounded-xl text-sm focus:outline-none"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                   placeholder="Q3 Hardware Verification"
                 />
               </div>
@@ -330,7 +330,7 @@ export const Audits: React.FC = () => {
                     required
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-855 rounded-xl text-sm focus:outline-none"
+                    className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                   />
                 </div>
                 <div>
@@ -340,7 +340,7 @@ export const Audits: React.FC = () => {
                     required
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-855 rounded-xl text-sm focus:outline-none"
+                    className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                   />
                 </div>
               </div>
@@ -355,7 +355,7 @@ export const Audits: React.FC = () => {
                     const opts = Array.from(e.target.selectedOptions, (o) => o.value);
                     setAssignedAuditors(opts);
                   }}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-855 rounded-xl text-sm focus:outline-none h-24"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none h-24"
                 >
                   {employees.map((emp) => (
                     <option key={emp._id} value={emp._id}>
@@ -370,7 +370,7 @@ export const Audits: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setCreateModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-850 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
                 >
                   Cancel
                 </button>
@@ -407,7 +407,7 @@ export const Audits: React.FC = () => {
                   required
                   value={assetTag}
                   onChange={(e) => setAssetTag(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-855 rounded-xl text-sm focus:outline-none font-mono"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none font-mono"
                   placeholder="AST-2026-0001"
                 />
               </div>
@@ -418,7 +418,7 @@ export const Audits: React.FC = () => {
                 <select
                   value={verifyStatus}
                   onChange={(e) => setVerifyStatus(e.target.value as any)}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-855 rounded-xl text-sm focus:outline-none"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                 >
                   <option value="Verified">Verified (Healthy)</option>
                   <option value="Damaged">Damaged</option>
@@ -432,7 +432,7 @@ export const Audits: React.FC = () => {
                 <textarea
                   value={verifyNotes}
                   onChange={(e) => setVerifyNotes(e.target.value)}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-855 rounded-xl text-sm focus:outline-none h-16 resize-none"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none h-16 resize-none"
                   placeholder="Visual casing is slightly worn but screen and CPU function cleanly..."
                 />
               </div>
@@ -441,7 +441,7 @@ export const Audits: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setVerifyModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-855 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
                 >
                   Cancel
                 </button>
@@ -500,7 +500,7 @@ export const Audits: React.FC = () => {
                                 <div className="font-semibold text-slate-800 dark:text-slate-200">{assetName}</div>
                                 <div className="text-[10px] text-slate-400 font-mono">{assetTag}</div>
                               </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-slate-650 dark:text-slate-350">
+                              <td className="px-4 py-3 whitespace-nowrap text-slate-600 dark:text-slate-300">
                                 {expectedHolderName}
                               </td>
                               <td className="px-4 py-3 whitespace-nowrap">
@@ -528,7 +528,7 @@ export const Audits: React.FC = () => {
                 <div className="flex justify-end pt-4 border-t border-slate-100 dark:border-slate-800/80">
                   <button
                     onClick={() => setReportModalOpen(false)}
-                    className="px-4 py-2 bg-slate-900 dark:bg-slate-800 hover:bg-slate-850 text-white rounded-xl text-sm font-semibold shadow-md"
+                    className="px-4 py-2 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white rounded-xl text-sm font-semibold shadow-md"
                   >
                     Close Report
                   </button>

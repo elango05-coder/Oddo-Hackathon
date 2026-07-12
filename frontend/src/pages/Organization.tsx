@@ -49,15 +49,15 @@ export const Organization: React.FC = () => {
           <div className="w-full border-t border-slate-100 dark:border-slate-800/80 my-6 pt-6 space-y-4 text-left">
             <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
               <Award className="h-4.5 w-4.5 text-indigo-600 flex-shrink-0" />
-              <span>License: <strong className="text-slate-850 dark:text-slate-250">{orgData.licenseKey}</strong></span>
+              <span>License: <strong className="text-slate-800 dark:text-slate-200">{orgData.licenseKey}</strong></span>
             </div>
             <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
               <Globe className="h-4.5 w-4.5 text-indigo-600 flex-shrink-0" />
-              <span>Timezone: <strong className="text-slate-850 dark:text-slate-250">{orgData.timezone}</strong></span>
+              <span>Timezone: <strong className="text-slate-800 dark:text-slate-200">{orgData.timezone}</strong></span>
             </div>
             <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
               <Compass className="h-4.5 w-4.5 text-indigo-600 flex-shrink-0" />
-              <span>Location: <strong className="text-slate-850 dark:text-slate-250">{orgData.location}</strong></span>
+              <span>Location: <strong className="text-slate-800 dark:text-slate-200">{orgData.location}</strong></span>
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@ export const Organization: React.FC = () => {
                   required
                   value={orgData.name}
                   onChange={(e) => setOrgData({ ...orgData, name: e.target.value })}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
 
@@ -87,7 +87,7 @@ export const Organization: React.FC = () => {
                   required
                   value={orgData.domain}
                   onChange={(e) => setOrgData({ ...orgData, domain: e.target.value })}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
 
@@ -97,7 +97,7 @@ export const Organization: React.FC = () => {
                 <select
                   value={orgData.currency}
                   onChange={(e) => setOrgData({ ...orgData, currency: e.target.value })}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                 >
                   <option>USD ($)</option>
                   <option>EUR (€)</option>
@@ -114,7 +114,7 @@ export const Organization: React.FC = () => {
                   required
                   value={orgData.location}
                   onChange={(e) => setOrgData({ ...orgData, location: e.target.value })}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
             </div>

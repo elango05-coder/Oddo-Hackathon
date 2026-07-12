@@ -165,7 +165,7 @@ export const Employees: React.FC = () => {
                             Active
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-450">
+                          <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-400">
                             <XCircle className="h-3.5 w-3.5" />
                             Inactive
                           </span>
@@ -186,7 +186,7 @@ export const Employees: React.FC = () => {
                                 deactivateMutation.mutate(emp._id);
                               }
                             }}
-                            className="text-red-650 hover:text-red-900 dark:text-red-400 p-1.5 hover:bg-red-50 dark:hover:bg-red-950/40 rounded-lg transition-colors"
+                            className="text-red-600 hover:text-red-900 dark:text-red-400 p-1.5 hover:bg-red-50 dark:hover:bg-red-950/40 rounded-lg transition-colors"
                             title="Deactivate Account"
                           >
                             <ShieldAlert className="h-4.5 w-4.5" />
@@ -216,7 +216,7 @@ export const Employees: React.FC = () => {
                 <select
                   value={roleName}
                   onChange={(e) => setRoleName(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                 >
                   <option value="Employee">Employee</option>
                   <option value="Department Head">Department Head</option>
@@ -231,7 +231,7 @@ export const Employees: React.FC = () => {
                 <select
                   value={departmentId}
                   onChange={(e) => setDepartmentId(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                 >
                   <option value="">None (Unassigned)</option>
                   {departments.map((d) => (

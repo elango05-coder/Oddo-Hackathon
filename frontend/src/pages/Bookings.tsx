@@ -198,7 +198,7 @@ export const Bookings: React.FC = () => {
 
             {selectedBooking ? (
               <div className="space-y-4 text-xs">
-                <div className="bg-slate-50 dark:bg-slate-850 border border-slate-100 p-3.5 rounded-xl">
+                <div className="bg-slate-50 dark:bg-slate-800 border border-slate-100 p-3.5 rounded-xl">
                   <p className="text-slate-500 font-medium">Resource Item:</p>
                   <p className="font-bold text-sm text-slate-800 mt-0.5">
                     {typeof selectedBooking.resourceId === 'object' ? selectedBooking.resourceId.name : 'Unknown'}
@@ -243,7 +243,7 @@ export const Bookings: React.FC = () => {
                 )}
               </div>
             ) : (
-              <div className="py-10 text-center text-slate-450 text-xs italic">
+              <div className="py-10 text-center text-slate-400 text-xs italic">
                 Select an event in the calendar to inspect reservation logs.
               </div>
             )}
@@ -266,7 +266,7 @@ export const Bookings: React.FC = () => {
                   required
                   value={resourceId}
                   onChange={(e) => setResourceId(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                 >
                   <option value="">Select Resource</option>
                   {assets.map((asset) => (
@@ -285,7 +285,7 @@ export const Bookings: React.FC = () => {
                   required
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                 />
               </div>
 
@@ -297,7 +297,7 @@ export const Bookings: React.FC = () => {
                   required
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                 />
               </div>
 
@@ -309,7 +309,7 @@ export const Bookings: React.FC = () => {
                   required
                   value={purpose}
                   onChange={(e) => setPurpose(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                   placeholder="On-site video production, system builds..."
                 />
               </div>
@@ -318,7 +318,7 @@ export const Bookings: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-850 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
                 >
                   Cancel
                 </button>
@@ -352,7 +352,7 @@ export const Bookings: React.FC = () => {
                   required
                   value={rescheduleStart}
                   onChange={(e) => setRescheduleStart(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                 />
               </div>
 
@@ -364,7 +364,7 @@ export const Bookings: React.FC = () => {
                   required
                   value={rescheduleEnd}
                   onChange={(e) => setRescheduleEnd(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                 />
               </div>
 
@@ -372,7 +372,7 @@ export const Bookings: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setRescheduleModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-850 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
                 >
                   Cancel
                 </button>

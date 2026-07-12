@@ -122,7 +122,7 @@ export const Categories: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {categories.length === 0 ? (
-            <div className="col-span-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-10 text-center text-slate-450 text-sm">
+            <div className="col-span-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-10 text-center text-slate-400 text-sm">
               No categories registered yet. Click "Create Category" to define asset schema templates.
             </div>
           ) : (
@@ -187,7 +187,7 @@ export const Categories: React.FC = () => {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                    className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                     placeholder="Laptops"
                   />
                 </div>
@@ -198,7 +198,7 @@ export const Categories: React.FC = () => {
                     required
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
-                    className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                    className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                     placeholder="LAP"
                   />
                 </div>
@@ -209,7 +209,7 @@ export const Categories: React.FC = () => {
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100 h-16 resize-none"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100 h-16 resize-none"
                   placeholder="Enterprise personal laptop allocations"
                 />
               </div>
@@ -217,11 +217,11 @@ export const Categories: React.FC = () => {
               {/* DYNAMIC FIELD ATTRIBUTES BUILDER */}
               <div className="border-t border-slate-100 dark:border-slate-800/80 pt-4">
                 <div className="flex justify-between items-center mb-3">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-650 dark:text-slate-400">Dynamic Attributes Fields</h4>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">Dynamic Attributes Fields</h4>
                   <button
                     type="button"
                     onClick={addFieldRow}
-                    className="px-2.5 py-1 text-[11px] font-bold bg-indigo-550/10 text-indigo-600 hover:bg-indigo-50 border border-indigo-200/50 rounded-lg transition-colors"
+                    className="px-2.5 py-1 text-[11px] font-bold bg-indigo-500/10 text-indigo-600 hover:bg-indigo-50 border border-indigo-200/50 rounded-lg transition-colors"
                   >
                     Add Attribute
                   </button>
@@ -229,7 +229,7 @@ export const Categories: React.FC = () => {
 
                 <div className="space-y-3 max-h-48 overflow-y-auto custom-scrollbar pr-1">
                   {fields.map((field, index) => (
-                    <div key={index} className="flex flex-wrap sm:flex-nowrap items-center gap-2 bg-slate-50 dark:bg-slate-850 p-2 rounded-xl border border-slate-100 dark:border-slate-800/40">
+                    <div key={index} className="flex flex-wrap sm:flex-nowrap items-center gap-2 bg-slate-50 dark:bg-slate-800 p-2 rounded-xl border border-slate-100 dark:border-slate-800/40">
                       
                       {/* Technical Name */}
                       <input
@@ -269,7 +269,7 @@ export const Categories: React.FC = () => {
                           type="checkbox"
                           checked={field.required}
                           onChange={(e) => handleFieldChange(index, 'required', e.target.checked)}
-                          className="rounded border-slate-200 text-indigo-650"
+                          className="rounded border-slate-200 text-indigo-600"
                         />
                         Req?
                       </label>

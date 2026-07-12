@@ -148,10 +148,10 @@ export const Transfers: React.FC = () => {
                         <div className="font-semibold text-slate-900 dark:text-slate-100">{assetName}</div>
                         <div className="text-xs text-slate-500 font-mono">{assetTag}</div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-slate-650 dark:text-slate-350">
+                      <td className="px-6 py-4 whitespace-nowrap text-slate-600 dark:text-slate-300">
                         {fromName}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-slate-650 dark:text-slate-350">
+                      <td className="px-6 py-4 whitespace-nowrap text-slate-600 dark:text-slate-300">
                         <div className="flex items-center gap-1">
                           <Clock className="h-3.5 w-3.5 text-indigo-500" />
                           <span>{toName}</span>
@@ -178,7 +178,7 @@ export const Transfers: React.FC = () => {
                               rejectMutation.mutate(req._id);
                             }
                           }}
-                          className="text-red-650 hover:text-red-950 p-1.5 hover:bg-red-50 rounded-lg inline-flex"
+                          className="text-red-600 hover:text-red-950 p-1.5 hover:bg-red-50 rounded-lg inline-flex"
                           title="Reject Transfer"
                         >
                           <X className="h-5 w-5" />
@@ -208,7 +208,7 @@ export const Transfers: React.FC = () => {
                   required
                   value={assetId}
                   onChange={(e) => setAssetId(e.target.value)}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                 >
                   <option value="">Select Asset</option>
                   {activeAllocations.map((alloc) => {
@@ -230,7 +230,7 @@ export const Transfers: React.FC = () => {
                   required
                   value={toUserId}
                   onChange={(e) => setToUserId(e.target.value)}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                 >
                   <option value="">Select Recipient</option>
                   {employees.map((emp) => (
@@ -248,7 +248,7 @@ export const Transfers: React.FC = () => {
                   required
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none h-20 resize-none"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none h-20 resize-none"
                   placeholder="Relocating to visual department, peer needs display access..."
                 />
               </div>
@@ -257,7 +257,7 @@ export const Transfers: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-850 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
                 >
                   Cancel
                 </button>

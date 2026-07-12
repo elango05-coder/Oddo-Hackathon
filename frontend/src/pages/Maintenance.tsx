@@ -238,7 +238,7 @@ export const Maintenance: React.FC = () => {
                           {ticket.priority}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-slate-650 dark:text-slate-350">
+                      <td className="px-6 py-4 whitespace-nowrap text-slate-600 dark:text-slate-300">
                         {reporterName}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
@@ -296,7 +296,7 @@ export const Maintenance: React.FC = () => {
                   required
                   value={assetId}
                   onChange={(e) => setAssetId(e.target.value)}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                 >
                   <option value="">Select Asset</option>
                   {assets.map((asset) => (
@@ -313,7 +313,7 @@ export const Maintenance: React.FC = () => {
                 <select
                   value={priority}
                   onChange={(e) => setPriority(e.target.value)}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                 >
                   <option value="Low">Low</option>
                   <option value="Medium">Medium</option>
@@ -329,7 +329,7 @@ export const Maintenance: React.FC = () => {
                   required
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-855 rounded-xl text-sm focus:outline-none h-20 resize-none"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none h-20 resize-none"
                   placeholder="Describe the display issues, physical damage, software crashes..."
                 />
               </div>
@@ -349,7 +349,7 @@ export const Maintenance: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setRequestModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-850 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
                 >
                   Cancel
                 </button>
@@ -382,7 +382,7 @@ export const Maintenance: React.FC = () => {
                   required
                   value={assignedTechnicianId}
                   onChange={(e) => setAssignedTechnicianId(e.target.value)}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                 >
                   <option value="">Select Technician</option>
                   {technicians.map((tech) => (
@@ -401,7 +401,7 @@ export const Maintenance: React.FC = () => {
                   required
                   value={estimatedCost}
                   onChange={(e) => setEstimatedCost(Number(e.target.value))}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-855 rounded-xl text-sm focus:outline-none"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                 />
               </div>
 
@@ -409,7 +409,7 @@ export const Maintenance: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setApproveModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-850 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
                 >
                   Cancel
                 </button>
@@ -443,7 +443,7 @@ export const Maintenance: React.FC = () => {
                   required
                   value={actualCost}
                   onChange={(e) => setActualCost(Number(e.target.value))}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-855 rounded-xl text-sm focus:outline-none"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none"
                 />
               </div>
 
@@ -454,7 +454,7 @@ export const Maintenance: React.FC = () => {
                   required
                   value={remarks}
                   onChange={(e) => setRemarks(e.target.value)}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-855 rounded-xl text-sm focus:outline-none h-20 resize-none"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none h-20 resize-none"
                   placeholder="Replaced displaying flex cables, screen functions cleanly..."
                 />
               </div>
@@ -463,7 +463,7 @@ export const Maintenance: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setResolveModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-850 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold"
                 >
                   Cancel
                 </button>

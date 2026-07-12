@@ -174,7 +174,7 @@ export const RegisterAsset: React.FC = () => {
             {/* Image Preview / Upload Box */}
             <div className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm flex flex-col items-center justify-center">
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 self-start">Asset Image</label>
-              <div className="h-40 w-full rounded-xl bg-slate-50 dark:bg-slate-850 border border-dashed border-slate-200 dark:border-slate-700 relative overflow-hidden flex items-center justify-center">
+              <div className="h-40 w-full rounded-xl bg-slate-50 dark:bg-slate-800 border border-dashed border-slate-200 dark:border-slate-700 relative overflow-hidden flex items-center justify-center">
                 {imagePreview ? (
                   <>
                     <img src={imagePreview} className="h-full w-full object-cover" alt="Preview" />
@@ -202,7 +202,7 @@ export const RegisterAsset: React.FC = () => {
             {/* Documents Receipt Box */}
             <div className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm">
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Invoice Receipts</label>
-              <label className="cursor-pointer flex items-center justify-center gap-1.5 px-4 py-2 border border-dashed border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-850 rounded-xl text-xs text-slate-500 font-semibold mb-3">
+              <label className="cursor-pointer flex items-center justify-center gap-1.5 px-4 py-2 border border-dashed border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl text-xs text-slate-500 font-semibold mb-3">
                 <Upload className="h-4 w-4" />
                 Upload PDFs / Docs
                 <input type="file" multiple className="hidden" onChange={handleDocsChange} />
@@ -210,7 +210,7 @@ export const RegisterAsset: React.FC = () => {
 
               <div className="space-y-1.5 overflow-y-auto max-h-32 custom-scrollbar">
                 {docFiles.map((doc, idx) => (
-                  <div key={idx} className="flex justify-between items-center text-[10px] bg-slate-50 dark:bg-slate-850 px-2 py-1.5 rounded-lg border border-slate-100 dark:border-slate-800/40">
+                  <div key={idx} className="flex justify-between items-center text-[10px] bg-slate-50 dark:bg-slate-800 px-2 py-1.5 rounded-lg border border-slate-100 dark:border-slate-800/40">
                     <span className="truncate max-w-[150px] font-mono">{doc.name}</span>
                     <button type="button" onClick={() => removeDoc(idx)} className="text-red-500 hover:bg-red-50 p-0.5 rounded">
                       <X className="h-3.5 w-3.5" />
@@ -232,7 +232,7 @@ export const RegisterAsset: React.FC = () => {
                 <input
                   type="text"
                   disabled={submitting}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                   placeholder="MacBook Pro 16"
                   {...register('name')}
                 />
@@ -245,7 +245,7 @@ export const RegisterAsset: React.FC = () => {
                 <input
                   type="text"
                   disabled={submitting}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                   placeholder="C02GG829MD6R"
                   {...register('serialNumber')}
                 />
@@ -256,7 +256,7 @@ export const RegisterAsset: React.FC = () => {
                 <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Asset Category</label>
                 <select
                   disabled={submitting}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                   {...register('categoryId')}
                 >
                   <option value="">Select Category</option>
@@ -274,7 +274,7 @@ export const RegisterAsset: React.FC = () => {
                 <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Assign to Department</label>
                 <select
                   disabled={submitting}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                   {...register('departmentId')}
                 >
                   <option value="">None (Corporate Stock)</option>
@@ -293,7 +293,7 @@ export const RegisterAsset: React.FC = () => {
                   type="number"
                   step="0.01"
                   disabled={submitting}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                   {...register('purchaseCost')}
                 />
                 {errors.purchaseCost && <p className="mt-1 text-xs text-red-500">{errors.purchaseCost.message}</p>}
@@ -305,7 +305,7 @@ export const RegisterAsset: React.FC = () => {
                 <input
                   type="date"
                   disabled={submitting}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                   {...register('purchaseDate')}
                 />
                 {errors.purchaseDate && <p className="mt-1 text-xs text-red-500">{errors.purchaseDate.message}</p>}
@@ -315,7 +315,7 @@ export const RegisterAsset: React.FC = () => {
             {/* DYNAMIC CATEGORY FIELD METADATA */}
             {selectedCategory && selectedCategory.fields.length > 0 && (
               <div className="border-t border-slate-100 dark:border-slate-800/80 pt-4 mt-4">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-650 dark:text-slate-400 mb-3">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-3">
                   Dynamic Category Parameters: {selectedCategory.name}
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -330,7 +330,7 @@ export const RegisterAsset: React.FC = () => {
                           disabled={submitting}
                           value={dynamicValues[field.name] || ''}
                           onChange={(e) => handleDynamicChange(field.name, e.target.value)}
-                          className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                          className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                         />
                       )}
                       {field.type === 'number' && (
@@ -339,7 +339,7 @@ export const RegisterAsset: React.FC = () => {
                           disabled={submitting}
                           value={dynamicValues[field.name] || ''}
                           onChange={(e) => handleDynamicChange(field.name, Number(e.target.value))}
-                          className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                          className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                         />
                       )}
                       {field.type === 'date' && (
@@ -348,7 +348,7 @@ export const RegisterAsset: React.FC = () => {
                           disabled={submitting}
                           value={dynamicValues[field.name] || ''}
                           onChange={(e) => handleDynamicChange(field.name, e.target.value)}
-                          className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                          className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                         />
                       )}
                       {field.type === 'boolean' && (
@@ -358,9 +358,9 @@ export const RegisterAsset: React.FC = () => {
                             disabled={submitting}
                             checked={!!dynamicValues[field.name]}
                             onChange={(e) => handleDynamicChange(field.name, e.target.checked)}
-                            className="rounded border-slate-200 text-indigo-650 h-4.5 w-4.5"
+                            className="rounded border-slate-200 text-indigo-600 h-4.5 w-4.5"
                           />
-                          <span className="text-xs font-medium text-slate-700 dark:text-slate-355">Toggle Option</span>
+                          <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Toggle Option</span>
                         </div>
                       )}
                     </div>

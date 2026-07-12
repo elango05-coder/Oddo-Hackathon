@@ -120,7 +120,7 @@ export const AssetDetails: React.FC = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-3.5 border-b-2 font-medium text-xs transition-colors -mb-px ${
                 isActive
-                  ? 'border-indigo-650 text-indigo-600'
+                  ? 'border-indigo-600 text-indigo-600'
                   : 'border-transparent text-slate-500 hover:text-slate-700'
               }`}
             >
@@ -181,7 +181,7 @@ export const AssetDetails: React.FC = () => {
                     const fieldDef = category.fields.find((f: any) => f.name === key);
                     const labelName = fieldDef ? fieldDef.label : key.replace('_', ' ');
                     return (
-                      <div key={key} className="bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800/40 p-3.5 rounded-xl">
+                      <div key={key} className="bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800/40 p-3.5 rounded-xl">
                         <span className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider">{labelName}</span>
                         <strong className="text-sm mt-1 block text-slate-800 dark:text-slate-200 capitalize">
                           {typeof val === 'boolean' ? (val ? 'Yes' : 'No') : String(val)}
@@ -317,7 +317,7 @@ export const AssetDetails: React.FC = () => {
             {/* Screen layout mockup */}
             <div className="flex flex-col lg:flex-row items-center justify-center gap-12 py-6 print:hidden">
               {/* Left Column: QR Code Box */}
-              <div className="bg-slate-50 dark:bg-slate-850 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col items-center shadow-md dark:shadow-none" id="qr-code-print">
+              <div className="bg-slate-50 dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col items-center shadow-md dark:shadow-none" id="qr-code-print">
                 <QRCodeSVG value={asset.tag} size={150} level="H" />
                 <span className="font-mono font-bold mt-4 tracking-widest text-slate-900 dark:text-slate-100">{asset.tag}</span>
                 <span className="text-[10px] text-slate-400 mt-1 uppercase font-semibold">AssetFlow System Barcode</span>
@@ -341,8 +341,8 @@ export const AssetDetails: React.FC = () => {
 
               {/* Right Column: Premium Asset Badge Card Mockup */}
               <div className="space-y-4">
-                <h4 className="font-bold text-xs uppercase tracking-wider text-slate-450 dark:text-slate-400">Corporate Property Asset Card</h4>
-                <div className="w-[3.5in] h-[2.2in] border border-slate-200 dark:border-slate-800 rounded-3xl p-5 flex flex-col justify-between bg-gradient-to-br from-white to-slate-550/20 dark:from-slate-900 dark:to-slate-950 text-slate-900 dark:text-white shadow-lg relative overflow-hidden">
+                <h4 className="font-bold text-xs uppercase tracking-wider text-slate-400 dark:text-slate-400">Corporate Property Asset Card</h4>
+                <div className="w-[3.5in] h-[2.2in] border border-slate-200 dark:border-slate-800 rounded-3xl p-5 flex flex-col justify-between bg-gradient-to-br from-white to-slate-500/20 dark:from-slate-900 dark:to-slate-950 text-slate-900 dark:text-white shadow-lg relative overflow-hidden">
                   <div className="absolute right-0 top-0 translate-x-8 -translate-y-8 h-24 w-24 bg-indigo-500/10 rounded-full blur-xl pointer-events-none" />
                   <div className="flex justify-between items-start border-b border-slate-200 dark:border-slate-800 pb-2 mb-2">
                     <div>
@@ -353,9 +353,9 @@ export const AssetDetails: React.FC = () => {
                   </div>
                   <div className="flex gap-4 flex-1 items-center">
                     <div className="flex-1 space-y-1.5 text-[9px] min-w-0">
-                      <p className="truncate"><span className="text-slate-400 uppercase text-[7px] tracking-wide block">Name</span> <strong className="text-slate-850 dark:text-slate-200">{asset.name}</strong></p>
-                      <p className="truncate"><span className="text-slate-400 uppercase text-[7px] tracking-wide block">Category</span> <strong className="text-slate-850 dark:text-slate-200">{category?.name || 'N/A'}</strong></p>
-                      <p className="truncate"><span className="text-slate-400 uppercase text-[7px] tracking-wide block">Department</span> <strong className="text-slate-850 dark:text-slate-200">{department?.name || 'Stock'}</strong></p>
+                      <p className="truncate"><span className="text-slate-400 uppercase text-[7px] tracking-wide block">Name</span> <strong className="text-slate-800 dark:text-slate-200">{asset.name}</strong></p>
+                      <p className="truncate"><span className="text-slate-400 uppercase text-[7px] tracking-wide block">Category</span> <strong className="text-slate-800 dark:text-slate-200">{category?.name || 'N/A'}</strong></p>
+                      <p className="truncate"><span className="text-slate-400 uppercase text-[7px] tracking-wide block">Department</span> <strong className="text-slate-800 dark:text-slate-200">{department?.name || 'Stock'}</strong></p>
                     </div>
                     <div className="flex-shrink-0 flex flex-col items-center gap-1.5 p-1 bg-white rounded-lg border border-slate-200">
                       <QRCodeSVG value={asset.tag} size={60} level="H" />
@@ -369,7 +369,7 @@ export const AssetDetails: React.FC = () => {
                 </div>
                 <button
                   onClick={() => window.print()}
-                  className="flex items-center gap-1.5 px-4 py-2 border border-indigo-200 dark:border-indigo-800/40 bg-indigo-50/30 dark:bg-indigo-950/20 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-550/20 rounded-xl text-xs font-bold transition-all cursor-pointer w-full justify-center"
+                  className="flex items-center gap-1.5 px-4 py-2 border border-indigo-200 dark:border-indigo-800/40 bg-indigo-50/30 dark:bg-indigo-950/20 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20 rounded-xl text-xs font-bold transition-all cursor-pointer w-full justify-center"
                 >
                   <Printer className="h-3.5 w-3.5" />
                   Print Physical ID Badge Card

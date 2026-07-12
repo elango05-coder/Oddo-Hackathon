@@ -58,7 +58,7 @@ export const Notifications: React.FC = () => {
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm divide-y divide-slate-100 dark:divide-slate-800/60">
           {notifications.length === 0 ? (
             <div className="p-12 text-center text-slate-400">
-              <Bell className="h-10 w-10 mx-auto mb-3 opacity-40 text-slate-450" />
+              <Bell className="h-10 w-10 mx-auto mb-3 opacity-40 text-slate-400" />
               No notifications recorded yet.
             </div>
           ) : (
@@ -72,7 +72,7 @@ export const Notifications: React.FC = () => {
                 <div className="flex justify-between items-start gap-4">
                   <div className="flex items-start gap-3">
                     <div className={`p-2 rounded-xl mt-0.5 ${
-                      !notif.isRead ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-650' : 'bg-slate-100 text-slate-450'
+                      !notif.isRead ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600' : 'bg-slate-100 text-slate-400'
                     }`}>
                       <Bell className="h-4.5 w-4.5" />
                     </div>

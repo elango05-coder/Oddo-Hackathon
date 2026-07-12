@@ -43,7 +43,7 @@ export const Settings: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Side: Summary Card */}
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm text-center flex flex-col items-center justify-center">
-          <div className="h-16 w-16 rounded-full bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-150/40 text-indigo-650 flex items-center justify-center text-xl font-bold mb-4">
+          <div className="h-16 w-16 rounded-full bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100/40 text-indigo-600 flex items-center justify-center text-xl font-bold mb-4">
             {user?.name.charAt(0).toUpperCase()}
           </div>
           <h3 className="font-bold text-lg text-slate-900 dark:text-white">{user?.name}</h3>
@@ -51,11 +51,11 @@ export const Settings: React.FC = () => {
 
           <div className="w-full border-t border-slate-100 dark:border-slate-800/80 my-6 pt-6 text-left text-xs space-y-4">
             <div className="flex items-center gap-2">
-              <Shield className="h-4.5 w-4.5 text-indigo-650" />
+              <Shield className="h-4.5 w-4.5 text-indigo-600" />
               <span>Role: <strong className="capitalize text-slate-900 dark:text-slate-200">{userRole}</strong></span>
             </div>
             <div className="flex items-center gap-2">
-              <Shield className="h-4.5 w-4.5 text-indigo-650" />
+              <Shield className="h-4.5 w-4.5 text-indigo-600" />
               <span>Department: <strong className="text-slate-900 dark:text-slate-200">{deptName}</strong></span>
             </div>
           </div>
@@ -75,7 +75,7 @@ export const Settings: React.FC = () => {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-855 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1.5 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
 
@@ -105,9 +105,9 @@ export const Settings: React.FC = () => {
           {/* Theme custom settings */}
           <div className="border-t border-slate-100 dark:border-slate-800/80 pt-6">
             <h4 className="font-bold text-sm mb-4">Preferences</h4>
-            <div className="flex justify-between items-center bg-slate-50 dark:bg-slate-850 p-4 rounded-xl border border-slate-100 dark:border-slate-800/40">
+            <div className="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-800/40">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-650 rounded-xl">
+                <div className="p-2 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 rounded-xl">
                   {theme === 'dark' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
                 </div>
                 <div>

@@ -76,7 +76,7 @@ export const Reports: React.FC = () => {
         </div>
         <button
           onClick={handleExportCSV}
-          className="flex items-center gap-1.5 px-4 py-2 bg-indigo-650 hover:bg-indigo-700 text-white rounded-xl text-sm font-semibold shadow-md shadow-indigo-100 dark:shadow-none transition-colors"
+          className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-semibold shadow-md shadow-indigo-100 dark:shadow-none transition-colors"
         >
           <Download className="h-4.5 w-4.5" />
           Export Inventory CSV
@@ -101,7 +101,7 @@ export const Reports: React.FC = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-3.5 border-b-2 font-medium text-xs transition-colors -mb-px ${
                 isActive
-                  ? 'border-indigo-650 text-indigo-600'
+                  ? 'border-indigo-600 text-indigo-600'
                   : 'border-transparent text-slate-500 hover:text-slate-700'
               }`}
             >
@@ -129,7 +129,7 @@ export const Reports: React.FC = () => {
                 </div>
                 <div className="h-72">
                   {utilizationData.length === 0 ? (
-                    <div className="h-full flex items-center justify-center text-slate-450 text-xs italic">
+                    <div className="h-full flex items-center justify-center text-slate-400 text-xs italic">
                       No category allocations logged yet.
                     </div>
                   ) : (
@@ -163,7 +163,7 @@ export const Reports: React.FC = () => {
                 </div>
                 <div className="h-72">
                   {maintenanceData.length === 0 ? (
-                    <div className="h-full flex items-center justify-center text-slate-450 text-xs italic">
+                    <div className="h-full flex items-center justify-center text-slate-400 text-xs italic">
                       No maintenance costs incurred yet.
                     </div>
                   ) : (
@@ -205,7 +205,7 @@ export const Reports: React.FC = () => {
                         <th className="px-4 py-2.5 text-left font-semibold text-slate-500">Purchase Date</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-650 dark:text-slate-350">
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-600 dark:text-slate-300">
                       {idleAssets.length === 0 ? (
                         <tr>
                           <td colSpan={4} className="px-4 py-8 text-center text-slate-405">No idle inventory found. All items checked out!</td>
@@ -243,7 +243,7 @@ export const Reports: React.FC = () => {
                         <th className="px-4 py-2.5 text-left font-semibold text-slate-500">Total Allocations</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-650 dark:text-slate-350">
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-600 dark:text-slate-300">
                       {popularAssets.length === 0 ? (
                         <tr>
                           <td colSpan={4} className="px-4 py-8 text-center text-slate-405">No transaction allocation data available.</td>

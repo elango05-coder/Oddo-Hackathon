@@ -91,7 +91,7 @@ export const ForgotPassword: React.FC = () => {
         </div>
       )}
 
-      <div className="mt-6 text-center border-t border-slate-100 dark:border-slate-850 pt-4">
+      <div className="mt-6 text-center border-t border-slate-100 dark:border-slate-800 pt-4">
         <Link
           to="/login"
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors"

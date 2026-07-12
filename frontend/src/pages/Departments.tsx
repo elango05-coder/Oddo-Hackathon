@@ -135,7 +135,7 @@ export const Departments: React.FC = () => {
                 <span className="font-medium text-slate-800 dark:text-slate-200">{headName}</span>
               </div>
             ) : (
-              <span className="text-slate-450 italic">None</span>
+              <span className="text-slate-400 italic">None</span>
             )}
           </td>
           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
@@ -238,7 +238,7 @@ export const Departments: React.FC = () => {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                   placeholder="Engineering"
                 />
               </div>
@@ -252,7 +252,7 @@ export const Departments: React.FC = () => {
                   disabled={!!editingDept}
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100 disabled:opacity-50 disabled:bg-slate-100"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100 disabled:opacity-50 disabled:bg-slate-100"
                   placeholder="ENG"
                 />
               </div>
@@ -263,7 +263,7 @@ export const Departments: React.FC = () => {
                 <select
                   value={parentId}
                   onChange={(e) => setParentId(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                 >
                   <option value="">None (Top Level)</option>
                   {departments
@@ -282,7 +282,7 @@ export const Departments: React.FC = () => {
                 <select
                   value={headId}
                   onChange={(e) => setHeadId(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="mt-1 block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
                 >
                   <option value="">Unassigned</option>
                   {employees.map((emp) => (
