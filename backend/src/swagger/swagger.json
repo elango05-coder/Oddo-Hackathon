@@ -1,0 +1,428 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "AssetFlow Enterprise API Documentation",
+    "version": "1.0.0",
+    "description": "Production-grade OpenAPI documentation for the AssetFlow Resource Management and ERP System backend."
+  },
+  "servers": [
+    {
+      "url": "/api/v1",
+      "description": "API Gateway"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "summary": "Register a new employee",
+        "tags": ["Authentication"],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "password"],
+                "properties": {
+                  "name": { "type": "string", "example": "John Doe" },
+                  "email": { "type": "string", "format": "email", "example": "john@assetflow.com" },
+                  "password": { "type": "string", "example": "johnpassword123" },
+                  "departmentId": { "type": "string", "example": "6a5314112ff1df93c41e3fbc" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Registration successful. Verification email dispatched." }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Authenticate user and issue JWTs",
+        "tags": ["Authentication"],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string", "example": "john@assetflow.com" },
+                  "password": { "type": "string", "example": "johnpassword123" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Login successful. Returns access and refresh tokens." }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "summary": "Refresh Access JWT using valid Refresh JWT",
+        "tags": ["Authentication"],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["refreshToken"],
+                "properties": {
+                  "refreshToken": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "New tokens generated." }
+        }
+      }
+    },
+    "/auth/verify-email": {
+      "get": {
+        "summary": "Verify email via token link",
+        "tags": ["Authentication"],
+        "security": [],
+        "parameters": [
+          { "name": "token", "in": "query", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Email verified." }
+        }
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "summary": "Request password recovery link",
+        "tags": ["Authentication"],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "email": { "type": "string", "example": "john@assetflow.com" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Recovery email dispatched." }
+        }
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "summary": "Reset password using recovery token",
+        "tags": ["Authentication"],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["token", "newPassword"],
+                "properties": {
+                  "token": { "type": "string" },
+                  "newPassword": { "type": "string", "example": "newpassword123" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Password updated." }
+        }
+      }
+    },
+    "/auth/promote": {
+      "post": {
+        "summary": "Promote user's RBAC role (Admin only)",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["userId", "roleName"],
+                "properties": {
+                  "userId": { "type": "string" },
+                  "roleName": { "type": "string", "enum": ["Admin", "Asset Manager", "Department Head", "Employee"] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "User promoted successfully." }
+        }
+      }
+    },
+    "/departments/hierarchy": {
+      "get": {
+        "summary": "Get organization department hierarchy tree",
+        "tags": ["Departments"],
+        "responses": {
+          "200": { "description": "Hierarchical tree of active departments." }
+        }
+      }
+    },
+    "/departments": {
+      "post": {
+        "summary": "Create new department (Admin only)",
+        "tags": ["Departments"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "code"],
+                "properties": {
+                  "name": { "type": "string", "example": "Finance" },
+                  "code": { "type": "string", "example": "FIN" },
+                  "parentId": { "type": "string" },
+                  "headId": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Department created." }
+        }
+      }
+    },
+    "/categories": {
+      "post": {
+        "summary": "Create asset category with custom metadata schema",
+        "tags": ["Asset Categories"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "code"],
+                "properties": {
+                  "name": { "type": "string", "example": "Servers" },
+                  "code": { "type": "string", "example": "SRV" },
+                  "fields": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": { "type": "string" },
+                        "label": { "type": "string" },
+                        "type": { "type": "string", "enum": ["text", "number", "boolean", "date"] },
+                        "required": { "type": "boolean" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Category created." }
+        }
+      }
+    },
+    "/assets/search": {
+      "get": {
+        "summary": "Paginated universal assets search & filter",
+        "tags": ["Assets"],
+        "parameters": [
+          { "name": "search", "in": "query", "schema": { "type": "string" } },
+          { "name": "categoryId", "in": "query", "schema": { "type": "string" } },
+          { "name": "departmentId", "in": "query", "schema": { "type": "string" } },
+          { "name": "status", "in": "query", "schema": { "type": "string" } },
+          { "name": "page", "in": "query", "schema": { "type": "integer" } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Matching assets catalog list." }
+        }
+      }
+    },
+    "/allocations/checkout": {
+      "post": {
+        "summary": "Allocate available asset to employee",
+        "tags": ["Allocations & Transfers"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["assetId", "assigneeId", "expectedReturnDate", "conditionOnAllocation"],
+                "properties": {
+                  "assetId": { "type": "string" },
+                  "assigneeId": { "type": "string" },
+                  "expectedReturnDate": { "type": "string", "format": "date-time" },
+                  "conditionOnAllocation": { "type": "string", "example": "Excellent" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Asset allocated successfully." }
+        }
+      }
+    },
+    "/allocations/return": {
+      "post": {
+        "summary": "Process checked-out asset return",
+        "tags": ["Allocations & Transfers"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["assetId", "conditionOnReturn"],
+                "properties": {
+                  "assetId": { "type": "string" },
+                  "conditionOnReturn": { "type": "string", "example": "Normal Wear" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Return logged." }
+        }
+      }
+    },
+    "/bookings": {
+      "post": {
+        "summary": "Reserve bookable shared item",
+        "tags": ["Bookings Scheduler"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["resourceId", "startTime", "endTime"],
+                "properties": {
+                  "resourceId": { "type": "string" },
+                  "startTime": { "type": "string", "format": "date-time" },
+                  "endTime": { "type": "string", "format": "date-time" },
+                  "reason": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Booking scheduled successfully." }
+        }
+      }
+    },
+    "/maintenance/request": {
+      "post": {
+        "summary": "Log maintenance request ticket",
+        "tags": ["Maintenance Requests"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["assetId", "description"],
+                "properties": {
+                  "assetId": { "type": "string" },
+                  "description": { "type": "string" },
+                  "priority": { "type": "string", "enum": ["Low", "Medium", "High", "Critical"] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Ticket raised." }
+        }
+      }
+    },
+    "/audits/verify": {
+      "post": {
+        "summary": "Verify physical item scan during audit cycle",
+        "tags": ["Audits"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["cycleId", "assetId", "status"],
+                "properties": {
+                  "cycleId": { "type": "string" },
+                  "assetId": { "type": "string" },
+                  "status": { "type": "string", "enum": ["Verified", "Missing", "Damaged"] },
+                  "notes": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Verification logged." }
+        }
+      }
+    },
+    "/reports/utilization": {
+      "get": {
+        "summary": "Get aggregate asset utilization percentages",
+        "tags": ["Reports & Analytics"],
+        "responses": {
+          "200": { "description": "Utilization rates." }
+        }
+      }
+    },
+    "/dashboard": {
+      "get": {
+        "summary": "Get global KPI dashboard widgets",
+        "tags": ["Dashboard"],
+        "parameters": [
+          { "name": "refresh", "in": "query", "schema": { "type": "boolean" } }
+        ],
+        "responses": {
+          "200": { "description": "Dashboard aggregates." }
+        }
+      }
+    }
+  }
+}
